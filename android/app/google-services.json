@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "335818406935",
+    "project_id": "petadoption-b2d7d",
+    "storage_bucket": "petadoption-b2d7d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335818406935:android:11b246df2940dca632b052",
+        "android_client_info": {
+          "package_name": "com.petadoptionapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1j5ErrUk0lKGfmrcgk3KnN9apH5RmzPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335818406935:android:7051e9136267718032b052",
+        "android_client_info": {
+          "package_name": "com.taskiapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1j5ErrUk0lKGfmrcgk3KnN9apH5RmzPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

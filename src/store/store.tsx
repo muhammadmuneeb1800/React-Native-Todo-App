@@ -8,6 +8,10 @@ const store = configureStore({
     dataSlice: dataSlice,
     authSlice: authSlice,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

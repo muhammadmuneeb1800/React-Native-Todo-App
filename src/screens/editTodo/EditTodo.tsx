@@ -5,92 +5,113 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Button from '../../components/button/Button';
+import useEditTodo from '../../hooks/useEditTodo/useEditTodo';
+import Input from '../../components/input/Input';
 
 export default function EditTodo() {
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const {
+    title,
+    setTitle,
+    notes,
+    setNotes,
+    selectedTag,
+    setSelectedTag,
+    date,
+    setDate,
+    handleEditTodo,
+    open,
+    setOpen,
+    isDropdownVisible,
+    setDropdownVisible,
+  } = useEditTodo();
 
   return (
     <View style={style.container}>
-      <Text style={style.add}>Edit Task</Text>
-      <View style={style.mainDiv}>
-        <View style={style.subDiv}>
-          <Text style={style.title}>Task Title</Text>
-          <TextInput style={style.input} placeholder="Input task title..." />
-        </View>
-        <View style={style.subDiv}>
-          <Text style={style.title}>Notes</Text>
-          <TextInput
-            multiline={true}
-            style={style.inputnotes}
-            placeholder="Input task notes..."
-          />
-        </View>
-        <View>
+      <View>
+        <View style={style.mainDiv}>
           <View style={style.subDiv}>
-            <Text style={style.title}>Tags</Text>
-            <TouchableOpacity
-              style={style.dropdownContainer}
-              onPress={() => setDropdownVisible(!isDropdownVisible)}>
-              <Text style={style.dropdownText}>
-                {selectedTag ? selectedTag : '- Select tags -'}
-              </Text>
-            </TouchableOpacity>
-            {isDropdownVisible && (
-              <View style={style.dropdownMenu}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedTag('Urgent');
-                    setDropdownVisible(false);
-                  }}>
-                  <Text style={style.dropdownItem}>Urgent</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedTag('Normal');
-                    setDropdownVisible(false);
-                  }}>
-                  <Text style={style.dropdownItem}>Normal</Text>
-                </TouchableOpacity>
-              </View>
-            )}
+            <Input
+              text="Task Title"
+              value={title}
+              onChangeText={setTitle}
+              place="Input task title..."
+            />
           </View>
-        </View>
-        <View style={style.subDiv}>
-          <Text style={style.remind}>Remind Me</Text>
-          <View style={style.dateContainer}>
-            <Text style={style.dateLabel}>Date & Time</Text>
-            <TouchableOpacity
-              style={style.datePicker}
-              onPress={() => setOpen(true)}>
-              <Text style={style.dateText}>
-                {date.toLocaleDateString()} - {date.toLocaleTimeString()}
-              </Text>
-              <Icon name="edit" size={20} color="#000" style={style.icon} />
-            </TouchableOpacity>
+          <View style={style.subDiv}>
+            <Text style={style.title}>Notes</Text>
+            <TextInput
+              value={notes}
+              onChangeText={setNotes}
+              multiline={true}
+              style={style.inputnotes}
+              placeholder="Input task notes..."
+            />
           </View>
-          <DatePicker
-            modal
-            open={open}
-            date={date}
-            onConfirm={selectedDate => {
-              setOpen(false);
-              setDate(selectedDate);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          />
+          <View>
+            <View style={style.subDiv}>
+              <Text style={style.title}>Tags</Text>
+              <TouchableOpacity
+                style={style.dropdownContainer}
+                onPress={() => setDropdownVisible(!isDropdownVisible)}>
+                <Text style={style.dropdownText}>
+                  {selectedTag ? selectedTag : '- Select tags -'}
+                </Text>
+              </TouchableOpacity>
+              {isDropdownVisible && (
+                <View style={style.dropdownMenu}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedTag('Urgent');
+                      setDropdownVisible(false);
+                    }}>
+                    <Text style={style.dropdownItem}>Urgent</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedTag('Normal');
+                      setDropdownVisible(false);
+                    }}>
+                    <Text style={style.dropdownItem}>Normal</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={style.subDiv}>
+            <Text style={style.remind}>Remind Me</Text>
+            <View style={style.dateContainer}>
+              <Text style={style.dateLabel}>Date & Time</Text>
+              <TouchableOpacity
+                style={style.datePicker}
+                onPress={() => setOpen(true)}>
+                <Text style={style.dateText}>
+                  {date.toLocaleDateString()} - {date.toLocaleTimeString()}
+                </Text>
+                <Icon name="edit" size={20} color="#000" style={style.icon} />
+              </TouchableOpacity>
+            </View>
+            <DatePicker
+              modal
+              open={open}
+              date={date}
+              onConfirm={selectedDate => {
+                setOpen(false);
+                setDate(selectedDate);
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
+            />
+          </View>
         </View>
       </View>
-      <TouchableOpacity style={style.addTask}>
-        <Text style={style.addText}>Save Task</Text>
-      </TouchableOpacity>
+      <View>
+        <Button text="Save Task" onclick={handleEditTodo} />
+      </View>
     </View>
   );
 }
@@ -99,18 +120,13 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
-  },
-  add: {
-    marginTop: 20,
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#0B0A11',
-    textAlign: 'center',
-    lineHeight: 24,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingBottom: 10,
+    paddingHorizontal: 20,
   },
   mainDiv: {
-    marginTop: 35,
+    marginTop: 25,
   },
   subDiv: {
     marginTop: 10,
@@ -181,7 +197,7 @@ const style = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 18,
     color: '#0B0A11',
-    marginBottom: 15,
+    marginBottom: 8,
     marginTop: 12,
   },
   dateContainer: {
@@ -219,7 +235,6 @@ const style = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 5,
-    marginTop: 110,
     textAlign: 'center',
   },
   addText: {

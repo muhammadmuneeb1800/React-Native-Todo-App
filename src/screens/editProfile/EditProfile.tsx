@@ -1,36 +1,88 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
+import {View, StyleSheet, Image, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {getUser, updateUser} from '../../store/slices/authSlice';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import Input from '../../components/input/Input';
+import Button from '../../components/button/Button';
+import auth from '@react-native-firebase/auth';
+import {useNavigation} from '@react-navigation/native';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+
+type RootState = {
+  HomeScreen: {
+    screen: 'Profile';
+  };
+};
+
+type Navigation = BottomTabNavigationProp<RootState>;
 
 export default function EditProfile() {
+  const user = useAppSelector(store => store.authSlice.user);
+  const [updateName, setUpdateName] = useState<string | undefined>(
+    user?.fullName,
+  );
+  const [updateEmail, setUpdateEmail] = useState<string | undefined>(
+    user?.email,
+  );
+  const navigation = useNavigation<Navigation>();
+  const dispatch = useAppDispatch();
+
+  const UpdateHandle = () => {
+    if (!updateName) {
+      Alert.alert('Please enter full name');
+      return;
+    }
+
+    if (!updateEmail && updateEmail?.includes('@') === false) {
+      Alert.alert('Please enter valid email address');
+      return;
+    }
+
+    const updatUser = {
+      uid: auth().currentUser?.uid,
+      fullName: updateName,
+      email: updateEmail,
+    };
+
+    dispatch(updateUser(updatUser));
+    Alert.alert('User Updated Successfully!');
+    navigation.navigate('HomeScreen', {screen: 'Profile'});
+  };
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
   return (
     <View style={style.container}>
-      <Text style={style.title}>Edit Profile</Text>
-      <View style={style.ImageCenter}>
-        <Image
-          style={style.img}
-          source={require('../../assets/images/ProfilePhoto.png')}
-        />
-      </View>
-      <View style={style.mainDiv}>
-        <View style={style.subDiv}>
-          <Text style={style.name}>Full Name</Text>
-          <TextInput style={style.input} placeholder="Full Name" />
+      <View>
+        <View style={style.ImageCenter}>
+          <Image
+            style={style.img}
+            source={require('../../assets/images/ProfilePhoto.png')}
+          />
         </View>
-        <View style={style.subDiv}>
-          <Text style={style.name}>Email Address</Text>
-          <TextInput style={style.input} placeholder="yourname@email.com" />
+        <View style={style.mainDiv}>
+          <View style={style.subDiv}>
+            <Input
+              text="Full Name"
+              place="Full Name"
+              value={updateName}
+              onChangeText={setUpdateName}
+            />
+          </View>
+          <View style={style.subDiv}>
+            <Input
+              text="Email Address"
+              place="yourname@gmail.com"
+              value={updateEmail}
+              onChangeText={setUpdateEmail}
+              keyboardType="email-address"
+            />
+          </View>
         </View>
       </View>
-      <TouchableOpacity style={style.addTask}>
-        <Text style={style.addText}>Save Changes</Text>
-      </TouchableOpacity>
+      <Button text="Save Changes" onclick={() => UpdateHandle()} />
     </View>
   );
 }
@@ -38,15 +90,11 @@ export default function EditProfile() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingHorizontal: 20,
-  },
-  title: {
-    marginTop: 30,
-    fontSize: 18,
-    fontWeight: '700',
-    textAlign: 'center',
-    lineHeight: 24,
+    backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingBottom: 30,
   },
   ImageCenter: {
     justifyContent: 'center',
@@ -59,45 +107,9 @@ const style = StyleSheet.create({
     borderRadius: 50,
   },
   mainDiv: {
-    marginTop: 60,
+    marginTop: 30,
   },
   subDiv: {
     marginBottom: 20,
-  },
-  name: {
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 16,
-    color: '#0B0A11',
-  },
-  input: {
-    marginTop: 8,
-    width: '100%',
-    borderColor: '#CBCBCB',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    height: 45,
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#0B0A11',
-    lineHeight: 18,
-  },
-  addTask: {
-    backgroundColor: '#7EBB4F',
-    borderWidth: 1,
-    borderColor: '#7EBB4F',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 5,
-    marginTop: 220,
-    textAlign: 'center',
-  },
-  addText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
   },
 });

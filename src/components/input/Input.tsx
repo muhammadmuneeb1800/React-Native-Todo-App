@@ -2,9 +2,9 @@ import {KeyboardTypeOptions, StyleSheet, Text, TextInput} from 'react-native';
 import React from 'react';
 
 type InputProps = {
-  text: string;
-  value: string;
-  onChangeText: (text: string) => void;
+  text?: string;
+  value?: string | undefined;
+  onChangeText?: (text: string) => void;
   place: string;
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;

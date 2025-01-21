@@ -1,15 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {
-  CreateUserResponse,
-  UserState,
-  User,
-  // LoginUserResponse,
-  // LoginUserInput,
-  // FirestoreUserData,
-} from '../../types/types';
+import {CreateUserResponse, UserState, User, update} from '../../types/types';
 import {Alert} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+// Register The User
 
 export const createUser = createAsyncThunk<CreateUserResponse, User>(
   'user/createUser',
@@ -25,13 +21,12 @@ export const createUser = createAsyncThunk<CreateUserResponse, User>(
         fullName: user.fullName,
         email: fullUser.email,
         phone: user.phone,
-        createdAt: firestore.FieldValue.serverTimestamp(),
       });
       return {
-        id: fullUser.uid,
-        fullName: user.fullName,
-        email: fullUser.email,
-        phone: user.phone,
+        id: fullUser.uid || '',
+        fullName: user.fullName || '',
+        email: fullUser.email || '',
+        phone: user.phone || '',
       };
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
@@ -56,120 +51,78 @@ export const createUser = createAsyncThunk<CreateUserResponse, User>(
   },
 );
 
-// export const loginUser = createAsyncThunk<LoginUserResponse, LoginUserInput>(
-//   'loginUser',
-//   async user => {
-//     if (user) {
-//       const userCredential = await auth().signInWithEmailAndPassword(
-//         user.email,
-//         user.password,
-//       );
-//       const fullUser = userCredential.user;
-//       const doc = await firestore().collection('users').doc(fullUser.uid).get();
-//       const userData = doc.data() as FirestoreUserData;
-//       if (
-//         userData.fullName === user.fullName &&
-//         userData.phone === user.phoneNumber
-//       ) {
-//         await auth().signInWithEmailAndPassword(user.email, user.password);
-//       } else {
-//         Alert.alert('Full name or phone number does not match.');
-//         return;
-//       }
-//       if (!doc.exists) {
-//         Alert.alert('User data not found in Firestore.');
-//         return;
-//       }
-//       return {
-//         uid: fullUser.uid,
-//         fullName: userData.fullName,
-//         email: userData.email,
-//         phone: userData.phone,
-//       };
-//     }
-//     // try {
-//     //   const userCredential = await auth().signInWithEmailAndPassword(
-//     //     user.email,
-//     //     user.password,
-//     //   );
+// with Google account
 
-//     //   const fullUser = userCredential.user;
-//     //   const doc = await firestore().collection('users').doc(fullUser.uid).get();
-//     //   const userData = doc.data() as FirestoreUserData;
-//     //   console.log('In thunk');
-//     //   if (
-//     //     userData.fullName !== user.fullName &&
-//     //     userData.phone !== user.phoneNumber
-//     //   ) {
-//     //     try {
-//     //       await auth().onAuthStateChanged(user1 => {
-//     //         console.log('User1', user1);
-//     //       });
-//     //       Alert.alert('User found');
-//     //     } catch (error) {
-//     //       throw error;
-//     //     }
-//     //   } else {
-//     //     Alert.alert('Full name or phone number does not match.');
-//     //     return;
-//     //   }
-//     //   if (!doc.exists) {
-//     //     Alert.alert('User data not found in Firestore.');
-//     //   }
+export const signInWithGoogle = createAsyncThunk('withGoogle', async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    const googleCredential = auth.GoogleAuthProvider.credential(
+      userInfo.data?.idToken as string,
+    );
+    const userCredential = await auth().signInWithCredential(googleCredential);
+    const fullUser = userCredential.user;
 
-//     //   console.log('end thunk');
-//     //   return {
-//     //     uid: fullUser.uid,
-//     //     fullName: userData.fullName,
-//     //     email: userData.email,
-//     //     phone: userData.phone,
-//     //   };
-//     // } catch (error: any) {
-//     //   if (error.code === 'auth/invalid-email') {
-//     //     Alert.alert('That email address is invalid!');
-//     //   } else if (error.code === 'auth/wrong-password') {
-//     //     Alert.alert('Wrong password!');
-//     //   } else {
-//     //     Alert.alert('An error occurred:', error.message);
-//     //   }
-//     //   if (error instanceof Error) {
-//     //     return console.log({message: error.message});
-//     //   } else {
-//     //     return console.log({message: 'An unknown error occurred'});
-//     //   }
-//     // }
-//   },
-// );
+    await firestore().collection('users').doc(fullUser.uid).set({
+      fullName: fullUser.displayName,
+      email: fullUser.email,
+      phone: fullUser.phoneNumber,
+    });
+    Alert.alert('Google Sign-In successful!');
+    return userCredential || null;
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    Alert.alert('Google Sign-In Error', errorMessage);
+  }
+});
+
+// Get User credentials
 
 export const getUser = createAsyncThunk('getUser', async () => {
   try {
     const user = auth().currentUser;
-    console.log('Current Firebase User:', user);
     if (user) {
-      const docRef = firestore().collection('users').doc(user.uid);
-      const doc = await docRef.get();
+      const docRef = firestore().collection('users').doc(user.uid) || null;
+      const doc = (await docRef.get()) || null;
       if (doc.exists) {
-        console.log('User Document Data:', doc.data());
         return {
           uid: user.uid,
           id: doc.id,
-          fullName: doc.data()?.fullName || 'No Name',
-          email: doc.data()?.email || 'No Email',
-          phone: doc.data()?.phone || 'No Phone',
+          fullName: doc.data()?.fullName || '',
+          email: doc.data()?.email || '',
+          phone: doc.data()?.phone || '',
         };
       } else {
-        console.error('User document not found in Firestore');
         throw new Error('User not found');
       }
     } else {
-      console.error('No user logged in');
+      await auth().signOut();
+      Alert.alert('Session Expired', 'Please log in again.');
       throw new Error('User not logged in');
     }
   } catch (error: any) {
-    console.error('Error in getUser thunk:', error.message);
     throw error;
   }
 });
+
+// Update User credentials
+
+export const updateUser = createAsyncThunk(
+  'updateUser',
+  async (user: update) => {
+    try {
+      const userRef = firestore().collection('users').doc(user.uid);
+      await userRef.update({
+        fullName: user.fullName,
+        email: user.email,
+      });
+      return user;
+    } catch (error: any) {
+      throw error;
+    }
+  },
+);
 
 const initialState: UserState = {
   uid: '',
@@ -185,18 +138,23 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(createUser.fulfilled, (state, action) => {
-      state.fullName = action.payload.fullName || '';
-      state.email = action.payload.email || '';
-      state.phone = action.payload.phone || null;
-      state.user = action.payload || null;
-    });
-    builder.addCase(getUser.fulfilled, (state, action) => {
-      state.fullName = action.payload.fullName;
-      state.email = action.payload.email;
-      state.phone = action.payload.phone;
-      state.user = action.payload;
-    });
+    builder
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.fullName = action.payload.fullName || '';
+        state.email = action.payload.email || '';
+        state.phone = action.payload.phone || null;
+        state.user = action.payload || null;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.fullName = action.payload.fullName || '';
+        state.email = action.payload.email || '';
+        state.phone = action.payload.phone || null;
+        state.user = action.payload || null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.fullName = action.payload.fullName || '';
+        state.email = action.payload.email || '';
+      });
   },
 });
 

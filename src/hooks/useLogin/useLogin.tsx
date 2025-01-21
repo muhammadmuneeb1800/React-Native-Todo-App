@@ -34,41 +34,23 @@ export default function useLogin() {
     };
 
     try {
-      auth().signInWithEmailAndPassword(user.email, user.password);
+      auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then(() => {
+          Alert.alert('Login successful!');
+        });
     } catch (error: any) {
-      console.log(error, 'errors');
+      if (error.code === 'auth/invalid-email') {
+        Alert.alert('Invalid email address. Please check and try again.');
+      } else if (error.code === 'auth/wrong-password') {
+        Alert.alert('Wrong password. Please try again.');
+      } else if (error.code === 'auth/user-not-found') {
+        Alert.alert('No account found with this email. Please register first.');
+      } else {
+        Alert.alert('An error occurred:', error.message || 'Unknown error.');
+      }
     }
   };
-
-  // const onGoogleButtonPress = async () => {
-  //   try {
-  //     // Ensure Google Play Services are available
-  //     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-
-  //     // Perform Google Sign-In
-  //     const signInResult = await GoogleSignin.signIn();
-
-  //     // Retrieve the ID token
-  //     const idToken = signInResult.idToken;
-  //     if (!idToken) {
-  //       throw new Error('Google Sign-In failed. No ID token found.');
-  //     }
-
-  //     // Create a Google credential with the token
-  //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  //     // Sign-in the user with the credential
-  //     const userCredential = await auth().signInWithCredential(
-  //       googleCredential,
-  //     );
-
-  //     Alert.alert('Google Sign-In successful!');
-  //     navigation.navigate('HomeScreen');
-  //     return userCredential;
-  //   } catch (error: any) {
-  //     Alert.alert('Google Sign-In Error', error.message);
-  //   }
-  // };
 
   return {
     fullName,
@@ -80,6 +62,5 @@ export default function useLogin() {
     password,
     setPassword,
     handleLogin,
-    // onGoogleButtonPress,
   };
 }

@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Alert} from 'react-native';
-import {useAppDispatch} from '../../store/store';
-import {AddTodo} from '../../store/slices/dataSlice';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {UpdateTodo} from '../../store/slices/dataSlice';
 import {useNavigation} from '@react-navigation/native';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
@@ -13,18 +13,24 @@ type RootStackParam = {
 
 type NativeProp = BottomTabNavigationProp<RootStackParam>;
 
-export default function useAddTodo() {
-  const [title, setTitle] = useState<string>('');
-  const [notes, setNotes] = useState<string>('');
-  const [selectedTag, setSelectedTag] = useState<string>('- Select tags -');
-  const [date, setDate] = useState<Date>(new Date());
+export default function useEditTodo() {
+  const AllData = useAppSelector(store => store.dataSlice.UpdateTodos) || null;
+
+  const [title, setTitle] = useState<string | undefined>(AllData?.title);
+  const [notes, setNotes] = useState<string | undefined>(AllData?.notes);
+  const [selectedTag, setSelectedTag] = useState<string | undefined>(
+    AllData?.tags,
+  );
+  const [date, setDate] = useState<Date>(
+    new Date(AllData?.dateTime || Date.now()),
+  );
   const [open, setOpen] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const Navigation = useNavigation<NativeProp>();
 
-  const handleAddTodo = () => {
+  const handleEditTodo = () => {
     if (title === '') {
       Alert.alert('Title is required');
       return;
@@ -38,25 +44,19 @@ export default function useAddTodo() {
       return;
     }
 
-    const yesterday = new Date(date);
-    yesterday.setDate(date.getDate() - 1);
-    yesterday.setHours(0, 0, 0, 0);
-
-    const selectedDate = new Date(date);
-    selectedDate.setHours(0, 0, 0, 0);
-
-    if (selectedDate.getTime() < yesterday.getTime()) {
+    if (!date) {
       Alert.alert('You cannot select a past date');
       return;
     }
 
     let data = {
+      id: AllData?.id,
       title: title,
       notes: notes,
       tags: selectedTag,
       date: date,
     };
-    dispatch(AddTodo(data));
+    dispatch(UpdateTodo(data));
     Navigation.navigate('HomeScreen', {screen: 'Home'});
 
     setTitle('');
@@ -73,7 +73,7 @@ export default function useAddTodo() {
     setSelectedTag,
     date,
     setDate,
-    handleAddTodo,
+    handleEditTodo,
     open,
     setOpen,
     isDropdownVisible,

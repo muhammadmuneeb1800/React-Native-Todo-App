@@ -3,18 +3,36 @@ import {
   StyleSheet,
   Image,
   Text,
-  TextInput,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
+  TextInput,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
-import {useAppSelector} from '../../store/store';
-export default function Home() {
-  const [isData, setIsData] = useState<boolean>(true);
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {DeleteTodo, GetTodos, updateId} from '../../store/slices/dataSlice';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
+import {TodoData} from '../../types/types';
 
-  const Data = useAppSelector(store => store.dataSlice.todos);
+type RootState = {
+  EditTodo?: undefined;
+};
+
+type NavigationProp = NativeStackNavigationProp<RootState>;
+export default function Home() {
+  const Data = useAppSelector(store => store.dataSlice.todos) || null;
+
+  const [isData, setIsData] = useState<boolean>(true);
+  const [open, setOpen] = useState(false);
+  const [openItemId, setOpenItemId] = useState<string | null | undefined>(null);
+  const [searchText, setSearchText] = useState('');
+  const [filteredData, setFilteredData] = useState(Data);
+
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp>();
+
   useEffect(() => {
     if (Data.length > 0) {
       setIsData(true);
@@ -22,6 +40,71 @@ export default function Home() {
       setIsData(false);
     }
   }, [Data]);
+
+  useEffect(() => {
+    dispatch(GetTodos());
+  }, [dispatch]);
+
+  const handleFilter = (text: string) => {
+    setSearchText(text);
+    const filtered = Data.filter(data =>
+      data.title?.toUpperCase().includes(text.toUpperCase()),
+    );
+    setFilteredData(filtered);
+  };
+
+  const renderItem = ({item}: {item: TodoData}) => {
+    return (
+      <View key={item?.id}>
+        <View style={style.top}>
+          <View>
+            <Text style={style.title}>{item?.title}</Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                setOpen(!open);
+                setOpenItemId(item.id);
+              }}>
+              <Icon2 name="dots-three-vertical" size={13} color={'#B7B7B7'} />
+            </TouchableOpacity>
+            {open && openItemId === item?.id ? (
+              <View style={style.pop}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('EditTodo');
+                    dispatch(updateId(item?.id));
+                    setOpen(false);
+                  }}>
+                  <Text style={style.edit}>Edit Task</Text>
+                </TouchableOpacity>
+                <View style={style.hr}> </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(DeleteTodo(item?.id));
+                  }}>
+                  <Text style={style.delete}>Delete Task</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <>
+                <Text style={style.hide}>No Data</Text>
+              </>
+            )}
+          </View>
+        </View>
+        <Text style={style.date}>
+          {item?.dateTime?.toLocaleString() || 'No date'}
+        </Text>
+        <Text style={style.notes}>{item?.notes}</Text>
+        <TouchableOpacity style={style.tagBtn}>
+          <Text style={[item?.tags === 'Urgent' ? style.tags : style.tags1]}>
+            {item?.tags}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={style.container}>
@@ -40,59 +123,35 @@ export default function Home() {
         </TouchableOpacity>
       </View>
       <View style={style.inputDiv}>
-        <TextInput style={style.input} placeholder="Search task here…" />
+        <TextInput
+          style={style.input}
+          placeholder="Search task here…"
+          value={searchText}
+          onChangeText={text => handleFilter(text)}
+        />
         <Icon name="search" size={20} color={'#B7B7B7'} />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {isData ? (
-          <View style={style.data}>
-            <Text>
-              {Data.map(item => {
-                const formattedDate = item.dateTime
-                  ? item.dateTime instanceof Date
-                    ? item.dateTime.toLocaleString()
-                    : item.dateTime
-                  : 'No date available';
-                return (
-                  <View key={item.id}>
-                    <View>
-                      <Text>Data</Text>
-                    </View>
-                    <View style={style.top}>
-                      <Text style={style.title}>{item.title}</Text>
-                      <TouchableOpacity>
-                        <Icon2
-                          name="dots-three-vertical"
-                          size={13}
-                          color={'#B7B7B7'}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={style.date}>{formattedDate}</Text>
-                    <Text style={style.notes}>{item.notes}</Text>
-                    <Text
-                      style={[
-                        item.tags === 'Urgent' ? style.tags : style.tags1,
-                      ]}>
-                      {item.tags}
-                    </Text>
-                  </View>
-                );
-              })}
+      {isData ? (
+        <View style={style.data}>
+          <FlatList
+            data={filteredData}
+            renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            refreshing={true}
+          />
+        </View>
+      ) : (
+        <>
+          <View style={style.nodata}>
+            <Image source={require('../../assets/images/EmptyState.png')} />
+            <Text style={style.notask}>No Task</Text>
+            <Text style={style.looks}>
+              Looks like you don't have a task, please add task
             </Text>
           </View>
-        ) : (
-          <>
-            <View style={style.nodata}>
-              <Image source={require('../../assets/images/EmptyState.png')} />
-              <Text style={style.notask}>No Task</Text>
-              <Text style={style.looks}>
-                Looks like you don't have a task, please add task
-              </Text>
-            </View>
-          </>
-        )}
-      </ScrollView>
+        </>
+      )}
     </View>
   );
 }
@@ -182,6 +241,7 @@ const style = StyleSheet.create({
     lineHeight: 18,
     fontWeight: '400',
     width: '100%',
+    zIndex: -1,
   },
   tags: {
     marginTop: 10,
@@ -212,5 +272,42 @@ const style = StyleSheet.create({
     width: 70,
     textAlign: 'center',
     marginBottom: 10,
+  },
+  pop: {
+    backgroundColor: '#fff',
+    width: 105,
+    position: 'absolute',
+    top: 15,
+    right: 20,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    elevation: 4,
+    zIndex: 1,
+  },
+  edit: {
+    color: '#0B0A11B2',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 18,
+    textAlign: 'center',
+  },
+  delete: {
+    color: '#BA1735',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 18,
+    textAlign: 'center',
+  },
+  hr: {
+    backgroundColor: '#545458',
+    height: 1,
+    marginVertical: 3,
+  },
+  hide: {
+    display: 'none',
+  },
+  tagBtn: {
+    width: 70,
   },
 });

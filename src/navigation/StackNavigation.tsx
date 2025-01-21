@@ -7,6 +7,10 @@ import Login from '../screens/login/Login';
 import Register from '../screens/register/Register';
 import BottomTabNavigation from './BottomTabNavigation';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import EditProfile from '../screens/editProfile/EditProfile';
+import EditTodo from '../screens/editTodo/EditTodo';
+import editPassword from '../screens/editPassword/editPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +23,13 @@ export default function StackNavigation() {
       setIsAuthenticated(!!user);
     });
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '335818406935-7uhglnrai1ha9pocfrsqvp2vv73cq3uv.apps.googleusercontent.com',
+    });
   }, []);
 
   useEffect(() => {
@@ -39,11 +50,37 @@ export default function StackNavigation() {
         ) : (
           <>
             {isAuthenticated ? (
-              <Stack.Screen
-                name="HomeScreen"
-                options={{headerShown: false}}
-                component={BottomTabNavigation}
-              />
+              <>
+                <Stack.Screen
+                  name="HomeScreen"
+                  options={{headerShown: false}}
+                  component={BottomTabNavigation}
+                />
+                <Stack.Screen
+                  name="EditProfile"
+                  options={{
+                    headerShadowVisible: false,
+                    headerTitleAlign: 'center',
+                  }}
+                  component={EditProfile}
+                />
+                <Stack.Screen
+                  name="EditTodo"
+                  options={{
+                    headerShadowVisible: false,
+                    headerTitleAlign: 'center',
+                  }}
+                  component={EditTodo}
+                />
+                <Stack.Screen
+                  name="EditPassword"
+                  options={{
+                    headerShadowVisible: false,
+                    headerTitleAlign: 'center',
+                  }}
+                  component={editPassword}
+                />
+              </>
             ) : (
               <>
                 <Stack.Screen

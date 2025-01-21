@@ -5,6 +5,8 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import useRegister from '../../hooks/useRegister/useRegister';
 import {useNavigation} from '@react-navigation/native';
 import Input from '../../components/input/Input';
+import {signInWithGoogle} from '../../store/slices/authSlice';
+import {useAppDispatch} from '../../store/store';
 
 type RootState = {
   Login?: undefined;
@@ -29,6 +31,7 @@ export default function Register() {
   } = useRegister();
 
   const Navigation = useNavigation<Navigation>();
+  const dispatch = useAppDispatch();
 
   return (
     <View style={style.container}>
@@ -90,7 +93,9 @@ export default function Register() {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={style.google}>
+      <TouchableOpacity
+        style={style.google}
+        onPress={() => dispatch(signInWithGoogle())}>
         <Image
           style={style.googleImage}
           source={require('../../assets/images/google.png')}
@@ -112,9 +117,12 @@ export default function Register() {
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
     flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingBottom: 30,
   },
   join: {
     marginTop: 90,
@@ -203,8 +211,6 @@ const style = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 5,
-    marginTop: 60,
-    marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,17 +1,10 @@
 import {useState} from 'react';
 import {Alert} from 'react-native';
 import {useAppDispatch} from '../../store/store';
-import {AddTodo} from '../../store/slices/dataSlice';
+import {AddTodo} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-
-type RootStackParam = {
-  HomeScreen: {
-    screen: 'Home';
-  };
-};
-
-type NativeProp = BottomTabNavigationProp<RootStackParam>;
+import {NativeProp} from '../../types/types';
+import auth from '@react-native-firebase/auth';
 
 export default function useAddTodo() {
   const [title, setTitle] = useState<string>('');
@@ -37,25 +30,16 @@ export default function useAddTodo() {
       Alert.alert('Tags are required');
       return;
     }
-
-    const yesterday = new Date(date);
-    yesterday.setDate(date.getDate() - 1);
-    yesterday.setHours(0, 0, 0, 0);
-
-    const selectedDate = new Date(date);
-    selectedDate.setHours(0, 0, 0, 0);
-
-    if (selectedDate.getTime() < yesterday.getTime()) {
-      Alert.alert('You cannot select a past date');
-      return;
-    }
+    const user = auth().currentUser?.uid;
 
     let data = {
+      user_id: user,
       title: title,
       notes: notes,
       tags: selectedTag,
-      date: date,
+      createdAt: date,
     };
+    console.log('first', data);
     dispatch(AddTodo(data));
     Navigation.navigate('HomeScreen', {screen: 'Home'});
 

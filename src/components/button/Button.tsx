@@ -1,10 +1,6 @@
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-
-type ButtonProps = {
-  onclick: () => void;
-  text: string;
-};
+import {ButtonProps} from '../../types/types';
 
 export default function Button(props: ButtonProps) {
   return (

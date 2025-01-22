@@ -1,22 +1,15 @@
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import useLogin from '../../hooks/useLogin/useLogin';
 import {useNavigation} from '@react-navigation/native';
 import Button from '../../components/button/Button';
 import Input from '../../components/input/Input';
 import {signInWithGoogle} from '../../store/slices/authSlice';
 import {useAppDispatch} from '../../store/store';
-
-type RootStackParamList = {
-  Login?: undefined;
-  Register?: undefined;
-};
-
-type NativeProps = NativeStackNavigationProp<RootStackParamList>;
+import {NavigationProps} from '../../types/types';
 
 export default function Login() {
-  const navigation = useNavigation<NativeProps>();
+  const navigation = useNavigation<NavigationProps>();
   const {
     fullName,
     setFullName,

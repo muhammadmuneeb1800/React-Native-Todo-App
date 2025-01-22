@@ -6,15 +6,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-
-type RootState = {
-  HomeScreen: {
-    screen: 'Profile';
-  };
-};
-
-type Navigation = BottomTabNavigationProp<RootState>;
+import {NativeProp} from '../../types/types';
 
 export default function EditProfile() {
   const user = useAppSelector(store => store.authSlice.user);
@@ -24,7 +16,7 @@ export default function EditProfile() {
   const [updateEmail, setUpdateEmail] = useState<string | undefined>(
     user?.email,
   );
-  const navigation = useNavigation<Navigation>();
+  const navigation = useNavigation<NativeProp>();
   const dispatch = useAppDispatch();
 
   const UpdateHandle = () => {

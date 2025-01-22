@@ -1,11 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch, useSelector} from 'react-redux';
-import dataSlice from './slices/dataSlice';
+import todoSlice from './slices/todoSlice';
 import authSlice from './slices/authSlice';
 
 const store = configureStore({
   reducer: {
-    dataSlice: dataSlice,
+    todoSlice: todoSlice,
     authSlice: authSlice,
   },
   middleware: getDefaultMiddleware =>

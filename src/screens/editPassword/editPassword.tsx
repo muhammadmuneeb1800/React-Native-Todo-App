@@ -6,22 +6,14 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-
-type RootState = {
-  HomeScreen: {
-    screen: 'Profile';
-  };
-};
-
-type Navigation = BottomTabNavigationProp<RootState>;
+import {NativeProp} from '../../types/types';
 
 export default function EditProfile() {
   const [oldPassword, setOldPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
 
-  const navigation = useNavigation<Navigation>();
+  const navigation = useNavigation<NativeProp>();
 
   const dispatch = useAppDispatch();
   const user = auth().currentUser;

@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import {TodoData, TodosState} from '../../types/types';
+import auth from '@react-native-firebase/auth';
 
 // Add Todo
 export const AddTodo = createAsyncThunk<TodoData, TodoData>(
@@ -21,18 +22,42 @@ export const GetTodos = createAsyncThunk<TodoData[], void>(
   'GetTodos',
   async (_, thunkAPI) => {
     try {
-      const snapshot = await firestore().collection('All Todos').get();
+      const user = auth().currentUser;
+      const snapshot = await firestore()
+        .collection('All Todos')
+        .where('user_id', '==', user?.uid)
+        .get();
       let AllData: TodoData[] = [];
       snapshot.forEach(doc => {
+        const data = doc.data();
+        const createdAt = data.createdAt;
+        const date = createdAt.toDate();
         AllData.push({
           id: doc.id,
-          ...doc.data(),
+          createdAt: date,
+          ...data,
         });
       });
+      console.log('All Data', AllData, user?.uid);
       return AllData;
     } catch (error: any) {
       console.error('Error getting Todos:', error);
       return thunkAPI.rejectWithValue('Failed to fetch Todos');
+    }
+  },
+);
+
+// Update Todo
+export const UpdateTodo = createAsyncThunk<TodoData, TodoData>(
+  'UpdateTodo',
+  async (data, thunkAPI) => {
+    try {
+      await firestore().collection('All Todos').doc(data.id).update(data);
+
+      return data;
+    } catch (error: any) {
+      console.error('Error updating Todo:', error);
+      return thunkAPI.rejectWithValue('Failed to update Todo');
     }
   },
 );
@@ -51,28 +76,13 @@ export const DeleteTodo = createAsyncThunk<
   }
 });
 
-// Update Todo
-export const UpdateTodo = createAsyncThunk<TodoData, TodoData>(
-  'UpdateTodo',
-  async (data, thunkAPI) => {
-    try {
-      await firestore().collection('All Todos').doc(data.id).update(data);
-
-      return data;
-    } catch (error: any) {
-      console.error('Error updating Todo:', error);
-      return thunkAPI.rejectWithValue('Failed to update Todo');
-    }
-  },
-);
-
 const initialState: TodosState = {
   todos: [],
   UpdateTodos: null,
 };
 
 // Todos Slice
-const dataSlice = createSlice({
+const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
@@ -89,7 +99,7 @@ const dataSlice = createSlice({
       .addCase(
         GetTodos.fulfilled,
         (state, action: PayloadAction<TodoData[]>) => {
-          state.todos = action.payload;
+          state.todos = action.payload || [];
         },
       )
       .addCase(
@@ -104,12 +114,12 @@ const dataSlice = createSlice({
           const updatedTodos = state.todos.map(todo =>
             todo.id === action.payload.id ? action.payload : todo,
           );
-          state.todos = updatedTodos;
+          state.todos = updatedTodos || [];
         },
       );
   },
 });
 
-export const {updateId} = dataSlice.actions;
+export const {updateId} = todoSlice.actions;
 
-export default dataSlice.reducer;
+export default todoSlice.reducer;

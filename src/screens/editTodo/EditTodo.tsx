@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../components/button/Button';
 import useEditTodo from '../../hooks/useEditTodo/useEditTodo';
 import Input from '../../components/input/Input';
+import moment from 'moment';
 
 export default function EditTodo() {
   const {
@@ -28,6 +29,8 @@ export default function EditTodo() {
     isDropdownVisible,
     setDropdownVisible,
   } = useEditTodo();
+
+  const newDate = moment(date).format('');
 
   return (
     <View style={style.container}>
@@ -88,9 +91,7 @@ export default function EditTodo() {
               <TouchableOpacity
                 style={style.datePicker}
                 onPress={() => setOpen(true)}>
-                <Text style={style.dateText}>
-                  {date.toLocaleDateString()} - {date.toLocaleTimeString()}
-                </Text>
+                <Text style={style.dateText}>{newDate}</Text>
                 <Icon name="edit" size={20} color="#000" style={style.icon} />
               </TouchableOpacity>
             </View>
@@ -98,9 +99,9 @@ export default function EditTodo() {
               modal
               open={open}
               date={date}
-              onConfirm={selectedDate => {
+              onConfirm={() => {
                 setOpen(false);
-                setDate(selectedDate);
+                setDate(new Date());
               }}
               onCancel={() => {
                 setOpen(false);

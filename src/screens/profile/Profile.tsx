@@ -4,21 +4,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import auth from '@react-native-firebase/auth';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getUser} from '../../store/slices/authSlice';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
-
-type RootStackParamList = {
-  EditProfile?: undefined;
-  EditPassword?: undefined;
-};
-
-type NativeProps = NativeStackNavigationProp<RootStackParamList>;
+import {NavigationProps} from '../../types/types';
 
 export default function Profile() {
   const user = useAppSelector(store => store.authSlice.user);
   const dispatch = useAppDispatch();
 
-  const navigation = useNavigation<NativeProps>();
+  const navigation = useNavigation<NavigationProps>();
 
   useEffect(() => {
     dispatch(getUser());

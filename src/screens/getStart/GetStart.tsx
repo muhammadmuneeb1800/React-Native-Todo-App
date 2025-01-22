@@ -1,15 +1,9 @@
 import {View, StyleSheet, Image, Text} from 'react-native';
 import React from 'react';
 import Button from '../../components/button/Button';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
+import {NavigationProps} from '../../types/types';
 
-type RootStackParamList = {
-  Login?: undefined;
-  Register?: undefined;
-};
-
-type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 export default function GetStart() {
   const navigation = useNavigation<NavigationProps>();
   return (

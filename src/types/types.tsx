@@ -1,3 +1,29 @@
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {KeyboardTypeOptions} from 'react-native';
+
+export type RootStackParam = {
+  HomeScreen?: {
+    screen?: 'Home' | 'Profile';
+  };
+};
+export type NativeProp = BottomTabNavigationProp<RootStackParam>;
+
+export type RootStackParamList1 = {
+  Login?: undefined;
+  Register?: undefined;
+  EditTodo?: undefined;
+  EditProfile?: undefined;
+  EditPassword?: undefined;
+};
+export type NavigationProps = NativeStackNavigationProp<RootStackParamList1>;
+
+export type tabScreen = {
+  Home?: undefined;
+  AddTodo?: undefined;
+  Profile?: undefined;
+};
+
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -62,10 +88,31 @@ export interface TodoData {
   title?: string;
   notes?: string;
   tags?: string;
-  dateTime?: Date | string;
+  createdAt?: Date;
+}
+export interface TodoData1 {
+  id?: string;
+  title?: string;
+  notes?: string;
+  tags?: string;
+  createdAt?: string;
 }
 
 export interface TodosState {
   todos: TodoData[];
-  UpdateTodos: TodoData | null;
+  UpdateTodos: TodoData | null | undefined;
 }
+
+export type ButtonProps = {
+  onclick: () => void;
+  text: string;
+};
+
+export type InputProps = {
+  text?: string;
+  value?: string | undefined;
+  onChangeText?: (text: string) => void;
+  place: string;
+  keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+};

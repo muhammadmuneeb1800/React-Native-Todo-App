@@ -1,19 +1,12 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import useRegister from '../../hooks/useRegister/useRegister';
 import {useNavigation} from '@react-navigation/native';
 import Input from '../../components/input/Input';
 import {signInWithGoogle} from '../../store/slices/authSlice';
 import {useAppDispatch} from '../../store/store';
-
-type RootState = {
-  Login?: undefined;
-  Register?: undefined;
-};
-
-type Navigation = NativeStackNavigationProp<RootState>;
+import {NavigationProps} from '../../types/types';
 
 export default function Register() {
   const {
@@ -30,7 +23,7 @@ export default function Register() {
     handleRegister,
   } = useRegister();
 
-  const Navigation = useNavigation<Navigation>();
+  const Navigation = useNavigation<NavigationProps>();
   const dispatch = useAppDispatch();
 
   return (

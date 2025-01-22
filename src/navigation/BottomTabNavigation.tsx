@@ -5,12 +5,7 @@ import AddTodo from '../screens/addTodo/AddTodo';
 import Icon from 'react-native-vector-icons/Octicons';
 import Icon1 from 'react-native-vector-icons/AntDesign';
 import Profile from '../screens/profile/Profile';
-
-type tabScreen = {
-  Home: undefined;
-  AddTodo: undefined;
-  Profile: undefined;
-};
+import {tabScreen} from '../types/types';
 
 const Tab = createBottomTabNavigator<tabScreen>();
 

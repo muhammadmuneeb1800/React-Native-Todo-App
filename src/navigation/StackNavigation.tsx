@@ -10,7 +10,7 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import EditProfile from '../screens/editProfile/EditProfile';
 import EditTodo from '../screens/editTodo/EditTodo';
-import editPassword from '../screens/editPassword/editPassword';
+import editPassword from '../screens/editPassword/EditPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +20,7 @@ export default function StackNavigation() {
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
+      user?.reload();
       setIsAuthenticated(!!user);
     });
     return unsubscribe;

@@ -1,29 +1,19 @@
 import {useState} from 'react';
 import {Alert} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {UpdateTodo} from '../../store/slices/dataSlice';
+import {UpdateTodo} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-
-type RootStackParam = {
-  HomeScreen: {
-    screen: 'Home';
-  };
-};
-
-type NativeProp = BottomTabNavigationProp<RootStackParam>;
+import {NativeProp} from '../../types/types';
 
 export default function useEditTodo() {
-  const AllData = useAppSelector(store => store.dataSlice.UpdateTodos) || null;
+  const AllData = useAppSelector(store => store.todoSlice.UpdateTodos) || null;
 
   const [title, setTitle] = useState<string | undefined>(AllData?.title);
   const [notes, setNotes] = useState<string | undefined>(AllData?.notes);
   const [selectedTag, setSelectedTag] = useState<string | undefined>(
     AllData?.tags,
   );
-  const [date, setDate] = useState<Date>(
-    new Date(AllData?.dateTime || Date.now()),
-  );
+  const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
 

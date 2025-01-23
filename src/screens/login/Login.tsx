@@ -10,6 +10,7 @@ import {NavigationProps} from '../../types/types';
 
 export default function Login() {
   const navigation = useNavigation<NavigationProps>();
+  const dispatch = useAppDispatch();
   const {
     fullName,
     setFullName,
@@ -21,8 +22,6 @@ export default function Login() {
     setPassword,
     handleLogin,
   } = useLogin();
-
-  const dispatch = useAppDispatch();
 
   return (
     <View style={style.container}>

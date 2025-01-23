@@ -23,23 +23,25 @@ export const GetTodos = createAsyncThunk<TodoData[], void>(
   async (_, thunkAPI) => {
     try {
       const user = auth().currentUser;
-      const snapshot = await firestore()
-        .collection('All Todos')
-        .where('user_id', '==', user?.uid)
-        .get();
-      let AllData: TodoData[] = [];
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const createdAt = data.createdAt;
-        const date = createdAt.toDate();
-        AllData.push({
-          id: doc.id,
-          createdAt: date,
-          ...data,
+      if (user) {
+        const snapshot = await firestore()
+          .collection('All Todos')
+          .where('user_id', '==', user?.uid)
+          .get();
+        let AllData: TodoData[] = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const convertedCreatedAt = new Date(data.createdAt.seconds * 1000);
+          AllData.push({
+            id: doc.id,
+            ...data,
+            createdAt: convertedCreatedAt,
+          });
         });
-      });
-      console.log('All Data', AllData, user?.uid);
-      return AllData;
+        return AllData;
+      } else {
+        throw new Error('User not login!');
+      }
     } catch (error: any) {
       console.error('Error getting Todos:', error);
       return thunkAPI.rejectWithValue('Failed to fetch Todos');
@@ -53,7 +55,7 @@ export const UpdateTodo = createAsyncThunk<TodoData, TodoData>(
   async (data, thunkAPI) => {
     try {
       await firestore().collection('All Todos').doc(data.id).update(data);
-
+      console.log('Update Data', data, data.createdAt);
       return data;
     } catch (error: any) {
       console.error('Error updating Todo:', error);
@@ -90,6 +92,7 @@ const todoSlice = createSlice({
       const data = state.todos.filter(todo => todo.id === action.payload);
       state.UpdateTodos = data[0];
     },
+    resetState: () => initialState,
   },
   extraReducers: builder => {
     builder
@@ -120,6 +123,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const {updateId} = todoSlice.actions;
+export const {updateId, resetState} = todoSlice.actions;
 
 export default todoSlice.reducer;

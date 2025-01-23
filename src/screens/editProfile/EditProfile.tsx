@@ -1,45 +1,16 @@
-import {View, StyleSheet, Image, Alert} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {getUser, updateUser} from '../../store/slices/authSlice';
-import {useAppDispatch, useAppSelector} from '../../store/store';
+import {View, StyleSheet, Image} from 'react-native';
+import React, {useEffect} from 'react';
+import {getUser} from '../../store/slices/authSlice';
+import {useAppDispatch} from '../../store/store';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
-import auth from '@react-native-firebase/auth';
-import {useNavigation} from '@react-navigation/native';
-import {NativeProp} from '../../types/types';
+import useEditProfile from '../../hooks/useEditProfile/useEditProfile';
 
 export default function EditProfile() {
-  const user = useAppSelector(store => store.authSlice.user);
-  const [updateName, setUpdateName] = useState<string | undefined>(
-    user?.fullName,
-  );
-  const [updateEmail, setUpdateEmail] = useState<string | undefined>(
-    user?.email,
-  );
-  const navigation = useNavigation<NativeProp>();
+  const {updateName, setUpdateName, updateEmail, setUpdateEmail, UpdateHandle} =
+    useEditProfile();
+
   const dispatch = useAppDispatch();
-
-  const UpdateHandle = () => {
-    if (!updateName) {
-      Alert.alert('Please enter full name');
-      return;
-    }
-
-    if (!updateEmail && updateEmail?.includes('@') === false) {
-      Alert.alert('Please enter valid email address');
-      return;
-    }
-
-    const updatUser = {
-      uid: auth().currentUser?.uid,
-      fullName: updateName,
-      email: updateEmail,
-    };
-
-    dispatch(updateUser(updatUser));
-    Alert.alert('User Updated Successfully!');
-    navigation.navigate('HomeScreen', {screen: 'Profile'});
-  };
 
   useEffect(() => {
     dispatch(getUser());

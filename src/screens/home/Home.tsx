@@ -12,7 +12,6 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {TodoData} from '../../types/types';
 import FlateList from '../../components/flateList/FlateList';
 import {GetTodos} from '../../store/slices/todoSlice';
-import auth from '@react-native-firebase/auth';
 
 export default function Home() {
   const Data = useAppSelector(store => store.todoSlice.todos) || null;
@@ -20,13 +19,10 @@ export default function Home() {
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState<TodoData[]>([]);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    if (auth().currentUser) {
-      if (Data.length === 0) {
-        dispatch(GetTodos());
-      }
-    }
-  }, [dispatch, Data.length]);
+    dispatch(GetTodos());
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredData(Data);

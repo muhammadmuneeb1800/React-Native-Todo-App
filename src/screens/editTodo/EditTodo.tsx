@@ -30,8 +30,6 @@ export default function EditTodo() {
     setDropdownVisible,
   } = useEditTodo();
 
-  const newDate = moment(date).format('');
-
   return (
     <View style={style.container}>
       <View>
@@ -91,7 +89,9 @@ export default function EditTodo() {
               <TouchableOpacity
                 style={style.datePicker}
                 onPress={() => setOpen(true)}>
-                <Text style={style.dateText}>{newDate}</Text>
+                <Text style={style.dateText}>
+                  {moment(date).format('MMMM D, YYYY - h:mm A')}
+                </Text>
                 <Icon name="edit" size={20} color="#000" style={style.icon} />
               </TouchableOpacity>
             </View>
@@ -99,9 +99,9 @@ export default function EditTodo() {
               modal
               open={open}
               date={date}
-              onConfirm={() => {
+              onConfirm={selectedDate => {
                 setOpen(false);
-                setDate(new Date());
+                setDate(selectedDate);
               }}
               onCancel={() => {
                 setOpen(false);

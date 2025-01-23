@@ -3,9 +3,10 @@ import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import auth from '@react-native-firebase/auth';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {getUser} from '../../store/slices/authSlice';
+import {getUser, resetAuth} from '../../store/slices/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProps} from '../../types/types';
+import {resetState} from '../../store/slices/todoSlice';
 
 export default function Profile() {
   const user = useAppSelector(store => store.authSlice.user);
@@ -17,10 +18,12 @@ export default function Profile() {
     dispatch(getUser());
   }, [dispatch]);
 
-  const signOut = () => {
-    auth()
+  const signOut = async () => {
+    dispatch(resetState());
+    await auth()
       .signOut()
       .catch(error => console.error('Error signing out:', error));
+    dispatch(resetAuth());
   };
   return (
     <>

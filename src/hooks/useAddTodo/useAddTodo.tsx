@@ -7,6 +7,9 @@ import {NativeProp} from '../../types/types';
 import auth from '@react-native-firebase/auth';
 
 export default function useAddTodo() {
+  const dispatch = useAppDispatch();
+  const user = auth().currentUser?.uid;
+  const Navigation = useNavigation<NativeProp>();
   const [title, setTitle] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('- Select tags -');
@@ -14,23 +17,35 @@ export default function useAddTodo() {
   const [open, setOpen] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
-  const dispatch = useAppDispatch();
-  const Navigation = useNavigation<NativeProp>();
-
   const handleAddTodo = () => {
-    if (title === '') {
+    if (title.trim() === '') {
       Alert.alert('Title is required');
       return;
     }
-    if (notes === '') {
+    if (title.length <= 3) {
+      Alert.alert('Title should be at least 4 characters long');
+      return;
+    }
+    if (notes.trim() === '') {
       Alert.alert('Notes are required');
+      return;
+    }
+    if (notes.length <= 5) {
+      Alert.alert('Notes should be at least 6 characters long');
       return;
     }
     if (selectedTag === '- Select tags -') {
       Alert.alert('Tags are required');
       return;
     }
-    const user = auth().currentUser?.uid;
+    if (!date) {
+      Alert.alert('You cannot select a past date');
+      return;
+    }
+    if (new Date(date) < new Date()) {
+      Alert.alert('You cannot select a past date');
+      return;
+    }
 
     let data = {
       user_id: user,
@@ -39,10 +54,9 @@ export default function useAddTodo() {
       tags: selectedTag,
       createdAt: date,
     };
-    console.log('first', data);
+
     dispatch(AddTodo(data));
     Navigation.navigate('HomeScreen', {screen: 'Home'});
-
     setTitle('');
     setNotes('');
     setSelectedTag('- Select tags -');

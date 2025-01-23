@@ -19,7 +19,7 @@ export default function useAddTodo() {
 
   const handleAddTodo = () => {
     if (title.trim() === '') {
-      Alert.alert('Title is required');
+      Alert.alert('Title is required!');
       return;
     }
     if (title.length <= 3) {

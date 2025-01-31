@@ -10,7 +10,9 @@ export default function Input(props: InputProps) {
         value={props.value}
         onChangeText={props.onChangeText}
         style={style.input}
+        editable={props.editable}
         placeholder={props.place}
+        placeholderTextColor="#0B0A11B2"
         keyboardType={props.keyboardType || 'default'}
         secureTextEntry={props.secureTextEntry || false}
       />

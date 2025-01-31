@@ -5,12 +5,17 @@ import {useAppDispatch} from '../../store/store';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import useEditProfile from '../../hooks/useEditProfile/useEditProfile';
+import Header from '../../components/header/Header';
 
 export default function EditProfile() {
-  const {updateName, setUpdateName, updateEmail, setUpdateEmail, UpdateHandle} =
-    useEditProfile();
-
   const dispatch = useAppDispatch();
+  const {
+    updateName,
+    setUpdateName,
+    updateEmail1,
+    setUpdateEmail1,
+    UpdateHandle,
+  } = useEditProfile();
 
   useEffect(() => {
     dispatch(getUser());
@@ -19,6 +24,7 @@ export default function EditProfile() {
   return (
     <View style={style.container}>
       <View>
+        <Header title="Edit Profile" />
         <View style={style.ImageCenter}>
           <Image
             style={style.img}
@@ -38,8 +44,10 @@ export default function EditProfile() {
             <Input
               text="Email Address"
               place="yourname@gmail.com"
-              value={updateEmail}
-              onChangeText={setUpdateEmail}
+              editable={false}
+              selectTextOnFocus={false}
+              value={updateEmail1}
+              onChangeText={setUpdateEmail1}
               keyboardType="email-address"
             />
           </View>

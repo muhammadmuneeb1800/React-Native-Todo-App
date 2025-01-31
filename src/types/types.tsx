@@ -41,6 +41,11 @@ export interface User {
   phone: string | number | null;
   password: string;
 }
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
 export interface update {
   uid: string | undefined;
   fullName: string | undefined;
@@ -52,6 +57,7 @@ export interface CreateUserResponse {
   fullName: string;
   email: string;
   phone: string | number | null;
+  password?: string;
 }
 
 export interface UserState {
@@ -88,7 +94,8 @@ export interface TodoData {
   title?: string;
   notes?: string;
   tags?: string;
-  createdAt?: Date;
+  createdAt?: string;
+  time?: string;
 }
 export interface TodoData1 {
   id?: string;
@@ -104,7 +111,7 @@ export interface TodosState {
 }
 
 export type ButtonProps = {
-  onclick: () => void;
+  onclick?: () => void;
   text: string;
 };
 
@@ -113,6 +120,17 @@ export type InputProps = {
   value?: string | undefined;
   onChangeText?: (text: string) => void;
   place: string;
+  placeholderTextColor?: string;
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;
+  editable?: boolean;
+  selectTextOnFocus?: boolean;
 };
+
+export interface DayPressEvent {
+  day?: number;
+  month?: number;
+  year?: number;
+  timestamp?: number;
+  dateString: any;
+}

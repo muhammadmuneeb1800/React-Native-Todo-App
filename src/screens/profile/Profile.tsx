@@ -11,7 +11,6 @@ import {resetState} from '../../store/slices/todoSlice';
 export default function Profile() {
   const user = useAppSelector(store => store.authSlice.user);
   const dispatch = useAppDispatch();
-
   const navigation = useNavigation<NavigationProps>();
 
   useEffect(() => {
@@ -20,9 +19,7 @@ export default function Profile() {
 
   const signOut = async () => {
     dispatch(resetState());
-    await auth()
-      .signOut()
-      .catch(error => console.error('Error signing out:', error));
+    await auth().signOut();
     dispatch(resetAuth());
   };
   return (

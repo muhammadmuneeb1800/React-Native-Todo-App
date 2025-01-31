@@ -64,6 +64,7 @@ export default function Home() {
         <TextInput
           style={style.input}
           placeholder="Search task here…"
+          placeholderTextColor="#0B0A11B2"
           value={searchText}
           onChangeText={text => handleFilter(text)}
         />

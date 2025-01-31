@@ -1,12 +1,14 @@
 import {Alert} from 'react-native';
 import {useState} from 'react';
-import auth from '@react-native-firebase/auth';
+import {loginUser} from '../../store/slices/authSlice';
+import {useAppDispatch} from '../../store/store';
 
 export default function useLogin() {
   const [fullName, setFullName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<number | null>(null);
   const [password, setPassword] = useState<string>('');
+  const dispatch = useAppDispatch();
 
   const handleLogin = async () => {
     if (fullName.trim() === '') {
@@ -47,29 +49,10 @@ export default function useLogin() {
       return;
     }
 
-    const user = {
-      fullName,
-      email,
-      phoneNumber,
-      password,
-    };
-
     try {
-      auth()
-        .signInWithEmailAndPassword(user.email, user.password)
-        .then(() => {
-          Alert.alert('Login successful!');
-        });
+      dispatch(loginUser({email, password}));
     } catch (error: any) {
-      if (error.code === 'auth/invalid-email') {
-        Alert.alert('Invalid email address. Please check and try again.');
-      } else if (error.code === 'auth/wrong-password') {
-        Alert.alert('Wrong password. Please try again.');
-      } else if (error.code === 'auth/user-not-found') {
-        Alert.alert('No account found with this email. Please register first.');
-      } else {
-        Alert.alert('An error occurred:', error.message || 'Unknown error.');
-      }
+      Alert.alert('Error login user:', error);
     }
   };
 

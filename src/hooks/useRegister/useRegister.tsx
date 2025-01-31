@@ -9,7 +9,6 @@ export default function useRegister() {
   const [phoneNumber, setPhoneNumber] = useState<number | null>(null);
   const [password, setPassword] = useState<string>('');
   const [isCheck, setIsCheck] = useState<boolean>(false);
-
   const dispatch = useAppDispatch();
 
   const handleRegister = async () => {

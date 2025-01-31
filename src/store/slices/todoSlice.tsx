@@ -31,11 +31,9 @@ export const GetTodos = createAsyncThunk<TodoData[], void>(
         let AllData: TodoData[] = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          const convertedCreatedAt = new Date(data.createdAt.seconds * 1000);
           AllData.push({
             id: doc.id,
             ...data,
-            createdAt: convertedCreatedAt,
           });
         });
         return AllData;
@@ -55,7 +53,6 @@ export const UpdateTodo = createAsyncThunk<TodoData, TodoData>(
   async (data, thunkAPI) => {
     try {
       await firestore().collection('All Todos').doc(data.id).update(data);
-      console.log('Update Data', data, data.createdAt);
       return data;
     } catch (error: any) {
       console.error('Error updating Todo:', error);

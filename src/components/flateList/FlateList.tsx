@@ -5,7 +5,6 @@ import {NavigationProps, TodoData} from '../../types/types';
 import {DeleteTodo, updateId} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../store/store';
-import moment from 'moment';
 
 export default function FlateList(props: {filteredData: TodoData[]}) {
   const [open, setOpen] = useState(false);
@@ -14,7 +13,6 @@ export default function FlateList(props: {filteredData: TodoData[]}) {
   const dispatch = useAppDispatch();
 
   const renderItem = ({item}: {item: TodoData}) => {
-    const newDate = moment(item.createdAt).format('MMMM D, YYYY - h:mm A');
     return (
       <View key={item?.id}>
         <View style={style.top}>
@@ -54,7 +52,9 @@ export default function FlateList(props: {filteredData: TodoData[]}) {
             )}
           </View>
         </View>
-        <Text style={style.date}>{newDate}</Text>
+        <Text style={style.date}>
+          {item?.createdAt} - {item?.time}
+        </Text>
         <Text style={style.notes}>{item?.notes}</Text>
         <TouchableOpacity style={style.tagBtn}>
           <Text style={[item?.tags === 'Urgent' ? style.tags : style.tags1]}>
@@ -91,9 +91,9 @@ const style = StyleSheet.create({
   },
   date: {
     marginTop: 7,
-    color: '#0B0A11',
-    fontSize: 12,
-    lineHeight: 15,
+    color: 'gray',
+    fontSize: 13,
+    lineHeight: 14,
     fontWeight: '400',
     width: '100%',
   },

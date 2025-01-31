@@ -3,7 +3,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/home/Home';
 import AddTodo from '../screens/addTodo/AddTodo';
 import Icon from 'react-native-vector-icons/Octicons';
-import Icon1 from 'react-native-vector-icons/AntDesign';
 import Profile from '../screens/profile/Profile';
 import {tabScreen} from '../types/types';
 
@@ -11,9 +10,6 @@ const Tab = createBottomTabNavigator<tabScreen>();
 
 const TabBarIcon = ({name}: {name: string}) => {
   return <Icon name={name} size={23} />;
-};
-const TabBarIcon2 = ({name}: {name: string}) => {
-  return <Icon1 name={name} size={23} />;
 };
 
 export default function BottomTabNavigation() {
@@ -41,14 +37,14 @@ export default function BottomTabNavigation() {
         name="AddTodo"
         component={AddTodo}
         options={{
-          tabBarIcon: () => <TabBarIcon name="diff-added" />,
+          tabBarIcon: () => <TabBarIcon name="home" />,
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: () => <TabBarIcon2 name="user" />,
+          tabBarIcon: () => <TabBarIcon name="home" />,
         }}
       />
     </Tab.Navigator>

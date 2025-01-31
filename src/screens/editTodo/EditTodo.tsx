@@ -4,14 +4,19 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Modal,
+  TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import React from 'react';
-import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../components/button/Button';
 import useEditTodo from '../../hooks/useEditTodo/useEditTodo';
 import Input from '../../components/input/Input';
 import moment from 'moment';
+import Header from '../../components/header/Header';
+import {Calendar} from 'react-native-calendars';
+import {DayPressEvent} from '../../types/types';
 
 export default function EditTodo() {
   const {
@@ -30,9 +35,66 @@ export default function EditTodo() {
     setDropdownVisible,
   } = useEditTodo();
 
+  const Time = moment(new Date()).valueOf();
+  const newTime = moment(Time).format('h:mm A');
+
+  const modleFunction = () => {
+    return (
+      <Modal transparent={true} animationType="slide" visible={open}>
+        <TouchableWithoutFeedback onPress={() => setOpen(false)}>
+          <Animated.View style={style.modelcontainer} />
+        </TouchableWithoutFeedback>
+        <View>
+          <View style={style.modelDiv}>
+            <TouchableOpacity style={style.line} onPress={() => setOpen(false)}>
+              {' '}
+            </TouchableOpacity>
+            <Text style={style.titleModel}>Add Date</Text>
+            <Calendar
+              style={style.calendar}
+              theme={{
+                backgroundColor: '#ffffff',
+                calendarBackground: '#ffffff',
+                textSectionTitleColor: '#b6c1cd',
+                textSectionTitleDisabledColor: '#d9e1e8',
+                selectedDayBackgroundColor: 'green',
+                selectedDayTextColor: 'green',
+                todayTextColor: 'green',
+                dayTextColor: '#2d4150',
+                textDisabledColor: '#d9e1e8',
+                dotColor: '#00adf5',
+                selectedDotColor: '#ffffff',
+                arrowColor: '#2d4150',
+                disabledArrowColor: '#d9e1e8',
+                monthTextColor: '#000',
+                textMonthFontWeight: 'bold',
+                textDayFontWeight: '300',
+                textDayHeaderFontWeight: '300',
+                textDayFontSize: 16,
+                textMonthFontSize: 20,
+                textDayHeaderFontSize: 14,
+              }}
+              monthFormat={'MMMM'}
+              firstDay={1}
+              hideExtraDays={true}
+              minDate={new Date().toISOString().split('T')[0]}
+              onDayPress={(day: DayPressEvent) => {
+                const newDate = moment(day.dateString).format('MMM DD, YYYY');
+                setDate(newDate);
+              }}
+            />
+            {date && <Text style={style.selectedDate}>{date}</Text>}
+            <Button text="Set Date & Time" onclick={() => setOpen(false)} />
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   return (
     <View style={style.container}>
       <View>
+        <Header title="Edit Task" />
         <View style={style.mainDiv}>
           <View style={style.subDiv}>
             <Input
@@ -50,6 +112,7 @@ export default function EditTodo() {
               multiline={true}
               style={style.inputnotes}
               placeholder="Input task notes..."
+              placeholderTextColor="#0B0A11B2"
             />
           </View>
           <View>
@@ -90,29 +153,18 @@ export default function EditTodo() {
                 style={style.datePicker}
                 onPress={() => setOpen(true)}>
                 <Text style={style.dateText}>
-                  {moment(date).format('MMMM D, YYYY - h:mm A')}
+                  {date} - {newTime}
                 </Text>
                 <Icon name="edit" size={20} color="#000" style={style.icon} />
               </TouchableOpacity>
             </View>
-            <DatePicker
-              modal
-              open={open}
-              date={date}
-              onConfirm={selectedDate => {
-                setOpen(false);
-                setDate(selectedDate);
-              }}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            />
           </View>
         </View>
       </View>
       <View>
         <Button text="Save Task" onclick={handleEditTodo} />
       </View>
+      {open && modleFunction()}
     </View>
   );
 }
@@ -244,5 +296,62 @@ const style = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
     textAlign: 'center',
+  },
+  modelcontainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  line: {
+    height: 3,
+    borderRadius: 5,
+    backgroundColor: '#ddd',
+    width: 35,
+    marginHorizontal: 'auto',
+    marginBottom: 10,
+  },
+  modelDiv: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: 'auto',
+    paddingTop: 10,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    position: 'absolute',
+    bottom: 0,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  titleModel: {
+    fontSize: 18,
+    fontWeight: '400',
+    textAlign: 'center',
+    lineHeight: 23,
+    marginVertical: 10,
+  },
+  calendar: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  selectedDate: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '700',
+    textAlign: 'center',
+    marginVertical: 15,
+  },
+  noDateSelected: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  modelText: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginVertical: 20,
+    textAlign: 'center',
+    lineHeight: 24,
   },
 });

@@ -1,7 +1,12 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {CreateUserResponse, UserState, User, update} from '../../types/types';
+import {
+  CreateUserResponse,
+  UserState,
+  User,
+  LoginCredentials,
+} from '../../types/types';
 import {Alert} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
@@ -21,12 +26,14 @@ export const createUser = createAsyncThunk<CreateUserResponse, User>(
         fullName: user.fullName,
         email: fullUser.email,
         phone: user.phone,
+        password: user.password,
       });
       return {
         id: fullUser.uid || '',
         fullName: user.fullName || '',
         email: fullUser.email || '',
         phone: user.phone || '',
+        password: user.password || '',
       };
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
@@ -34,11 +41,9 @@ export const createUser = createAsyncThunk<CreateUserResponse, User>(
           'That email address is already in use! Please try with another email address.',
         );
       }
-
       if (error.code === 'auth/invalid-email') {
         Alert.alert('That email address is invalid!');
       }
-
       if (error.code === 'auth/invalid-password') {
         Alert.alert('Password should be at least 6 characters long!');
       }
@@ -46,6 +51,28 @@ export const createUser = createAsyncThunk<CreateUserResponse, User>(
         return console.log({message: error.message});
       } else {
         return console.log({message: 'An unknown error occurred'});
+      }
+    }
+  },
+);
+
+// Login The User
+
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async ({email, password}: LoginCredentials) => {
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      Alert.alert('User logged in successfully');
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-email') {
+        Alert.alert('Invalid email address. Please check and try again.');
+      } else if (error.code === 'auth/wrong-password') {
+        Alert.alert('Wrong password. Please try again.');
+      } else if (error.code === 'auth/user-not-found') {
+        Alert.alert('No account found with this email. Please register first.');
+      } else if (error.code === 'auth/invalid-credential') {
+        Alert.alert('Email and Password is not valid. Please try again.');
       }
     }
   },
@@ -92,6 +119,7 @@ export const getUser = createAsyncThunk('getUser', async () => {
           fullName: doc.data()?.fullName || '',
           email: doc.data()?.email || '',
           phone: doc.data()?.phone || '',
+          password: doc.data()?.password || '',
         };
       } else {
         throw new Error('User not found');
@@ -108,21 +136,17 @@ export const getUser = createAsyncThunk('getUser', async () => {
 
 // Update User credentials
 
-export const updateUser = createAsyncThunk(
-  'updateUser',
-  async (user: update) => {
-    try {
-      const userRef = firestore().collection('users').doc(user.uid);
-      await userRef.update({
-        fullName: user.fullName,
-        email: user.email,
-      });
-      return user;
-    } catch (error: any) {
-      throw error;
-    }
-  },
-);
+export const updateUser = createAsyncThunk('updateUser', async (user: any) => {
+  try {
+    const userRef = firestore().collection('users').doc(user.uid);
+    await userRef.update({
+      fullName: user.fullName,
+    });
+    return user;
+  } catch (error: any) {
+    throw error;
+  }
+});
 
 const initialState: UserState = {
   uid: '',
@@ -145,17 +169,18 @@ const authSlice = createSlice({
         state.fullName = action.payload.fullName || '';
         state.email = action.payload.email || '';
         state.phone = action.payload.phone || null;
+        state.password = action.payload.password || null;
         state.user = action.payload || null;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.fullName = action.payload.fullName || '';
         state.email = action.payload.email || '';
         state.phone = action.payload.phone || null;
+        state.password = action.payload.password || '';
         state.user = action.payload || null;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.fullName = action.payload.fullName || '';
-        state.email = action.payload.email || '';
       });
   },
 });

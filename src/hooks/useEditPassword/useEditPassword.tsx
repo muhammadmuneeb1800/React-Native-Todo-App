@@ -9,7 +9,6 @@ export default function useEditPassword() {
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
   const navigation = useNavigation<NativeProp>();
-
   const user = auth().currentUser;
 
   const UpdateHandle = async () => {
@@ -56,13 +55,25 @@ export default function useEditPassword() {
       Alert.alert('Password Updated Successfully!');
       navigation.navigate('HomeScreen', {screen: 'Profile'});
     } catch (error: any) {
-      console.error('Error updating password:', error);
-      Alert.alert(
-        'Failed to update password:',
-        error.message || 'Unknown error',
-      );
+      if (error.code === 'auth/wrong-password') {
+        Alert.alert(
+          'Incorrect Old Password',
+          'The old password entered is incorrect. Please try again.',
+        );
+      } else if (error.code === 'auth/invalid-credential') {
+        Alert.alert(
+          'Wronge old password',
+          'The provided old password is invalid. Please check and try again.',
+        );
+      } else if (error.code === 'auth/network-request-failed') {
+        Alert.alert(
+          'Network Error',
+          'There was a network error. Please check your internet connection and try again.',
+        );
+      }
     }
   };
+
   return {
     oldPassword,
     setOldPassword,

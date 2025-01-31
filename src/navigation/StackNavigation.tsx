@@ -19,6 +19,16 @@ export default function StackNavigation() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
+    const currentUser = auth().currentUser;
+    if (!currentUser) {
+      auth().signOut();
+    }
+    if (currentUser) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+
     const unsubscribe = auth().onAuthStateChanged(user => {
       user?.reload();
       setIsAuthenticated(!!user);
@@ -60,24 +70,21 @@ export default function StackNavigation() {
                 <Stack.Screen
                   name="EditProfile"
                   options={{
-                    headerShadowVisible: false,
-                    headerTitleAlign: 'center',
+                    headerShown: false,
                   }}
                   component={EditProfile}
                 />
                 <Stack.Screen
                   name="EditTodo"
                   options={{
-                    headerShadowVisible: false,
-                    headerTitleAlign: 'center',
+                    headerShown: false,
                   }}
                   component={EditTodo}
                 />
                 <Stack.Screen
                   name="EditPassword"
                   options={{
-                    headerShadowVisible: false,
-                    headerTitleAlign: 'center',
+                    headerShown: false,
                   }}
                   component={editPassword}
                 />
@@ -92,18 +99,12 @@ export default function StackNavigation() {
                 />
                 <Stack.Screen
                   name="Login"
-                  options={{
-                    headerTransparent: true,
-                    headerTitleAlign: 'center',
-                  }}
+                  options={{headerShown: false}}
                   component={Login}
                 />
                 <Stack.Screen
                   name="Register"
-                  options={{
-                    headerTransparent: true,
-                    headerTitleAlign: 'center',
-                  }}
+                  options={{headerShown: false}}
                   component={Register}
                 />
               </>

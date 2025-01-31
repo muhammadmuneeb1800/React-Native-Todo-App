@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Alert} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {UpdateTodo} from '../../store/slices/todoSlice';
@@ -16,18 +16,9 @@ export default function useEditTodo() {
   const [selectedTag, setSelectedTag] = useState<string | undefined>(
     AllData?.tags,
   );
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(AllData?.createdAt);
   const [open, setOpen] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
-
-  useEffect(() => {
-    const newDate = moment(
-      AllData?.createdAt,
-      'MMMM D, YYYY - h:mm A',
-    ).toDate();
-    setDate(newDate);
-    console.log('Date', newDate);
-  }, [AllData]);
 
   const handleEditTodo = () => {
     if (title === undefined || title?.trim() === '') {
@@ -59,20 +50,26 @@ export default function useEditTodo() {
       return;
     }
 
+    const time1 = new Date();
+    const time = moment(time1).valueOf();
+    const formatTime = moment(time).format('hh.mm A');
+
     let data = {
       id: AllData?.id,
       title: title,
       notes: notes,
       tags: selectedTag,
       createdAt: date,
+      time: formatTime,
     };
+
     dispatch(UpdateTodo(data));
     Navigation.navigate('HomeScreen', {screen: 'Home'});
 
     setTitle('');
     setNotes('');
     setSelectedTag('- Select tags -');
-    setDate(new Date());
+    setDate('');
   };
   return {
     title,

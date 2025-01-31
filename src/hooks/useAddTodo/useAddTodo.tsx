@@ -5,6 +5,7 @@ import {AddTodo} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
 import {NativeProp} from '../../types/types';
 import auth from '@react-native-firebase/auth';
+import moment from 'moment';
 
 export default function useAddTodo() {
   const dispatch = useAppDispatch();
@@ -19,7 +20,7 @@ export default function useAddTodo() {
 
   const handleAddTodo = () => {
     if (title.trim() === '') {
-      Alert.alert('Title is required!');
+      Alert.alert('Title is required');
       return;
     }
     if (title.length <= 3) {
@@ -47,12 +48,19 @@ export default function useAddTodo() {
       return;
     }
 
+    const newDate = new Date(date);
+    const formateDate = moment(newDate).format('MMM DD, YYYY');
+    const time1 = new Date();
+    const time = moment(time1).valueOf();
+    const formatTime = moment(time).format('hh.mm A');
+
     let data = {
       user_id: user,
       title: title,
       notes: notes,
       tags: selectedTag,
-      createdAt: date,
+      createdAt: formateDate,
+      time: formatTime,
     };
 
     dispatch(AddTodo(data));

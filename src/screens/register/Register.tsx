@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Platform,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useRegister from '../../hooks/useRegister/useRegister';
@@ -16,6 +9,7 @@ import {useAppDispatch} from '../../store/store';
 import {NavigationProps} from '../../types/types';
 import Header from '../../components/header/Header';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {style} from './register';
 
 export default function Register() {
   const {
@@ -127,134 +121,3 @@ export default function Register() {
     </View>
   );
 }
-
-const style = StyleSheet.create({
-  header: {
-    flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    paddingBottom: 20,
-  },
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  join: {
-    marginTop: 50,
-    color: '#0B0A11',
-    fontWeight: '700',
-    fontSize: 24,
-    lineHeight: 32,
-  },
-  nice: {
-    fontSize: 14,
-    lineHeight: 32,
-    color: '#0B0A11B2',
-    fontWeight: '400',
-  },
-  mainDiv: {
-    marginTop: 15,
-  },
-  subDiv: {
-    marginTop: 24,
-  },
-  checkDiv: {
-    marginTop: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  agreeDiv: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: '#7EBB4F',
-  },
-  checked: {
-    backgroundColor: '#7EBB4F',
-    borderColor: '#7EBB4F',
-  },
-  unchecked: {
-    backgroundColor: '#fff',
-    borderColor: '#7EBB4F',
-  },
-  agre: {
-    color: '#0B0A11',
-    fontWeight: '400',
-    fontSize: 14,
-    lineHeight: 16,
-  },
-  term: {
-    color: '#7EBB4F',
-    fontWeight: '400',
-    fontSize: 14,
-    lineHeight: 16,
-  },
-  register: {
-    backgroundColor: '#7EBB4F',
-    borderWidth: 1,
-    borderColor: '#7EBB4F',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 5,
-    textAlign: 'center',
-  },
-  registerText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-  account: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 15,
-    justifyContent: 'center',
-  },
-  google: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#CBCBCB',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  googleText: {
-    color: '#0B0A11',
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-  googleImage: {
-    width: 27,
-    height: 27,
-    resizeMode: 'contain',
-  },
-});

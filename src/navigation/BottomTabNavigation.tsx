@@ -1,15 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from '../screens/home/Home';
-import AddTodo from '../screens/addTodo/AddTodo';
 import Icon from 'react-native-vector-icons/Octicons';
-import Profile from '../screens/profile/Profile';
 import {tabScreen} from '../types/types';
+import {TABS_STACK} from '../constants/constant.ts';
 
 const Tab = createBottomTabNavigator<tabScreen>();
 
-const TabBarIcon = ({name}: {name: string}) => {
-  return <Icon name={name} size={23} />;
+const TabBarIcon = ({name, color}: {name: string; color: string}) => {
+  return <Icon name={name} size={23} color={color} />;
 };
 
 export default function BottomTabNavigation() {
@@ -25,28 +23,21 @@ export default function BottomTabNavigation() {
           height: 67,
         },
         tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: '#7EBB4F',
       }}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: () => <TabBarIcon name="home" />,
-        }}
-      />
-      <Tab.Screen
-        name="AddTodo"
-        component={AddTodo}
-        options={{
-          tabBarIcon: () => <TabBarIcon name="home" />,
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: () => <TabBarIcon name="home" />,
-        }}
-      />
+      {TABS_STACK.map((tab, index) => (
+        <Tab.Screen
+          key={index}
+          name={tab.name}
+          component={tab.component}
+          options={{
+            tabBarIcon: () => (
+              <TabBarIcon name={tab.icon} color={'#7EBB4F'} />
+            ),
+            tabBarLabelStyle: {fontSize: 12, fontWeight: 'bold'},
+          }}
+        />
+      ))}
     </Tab.Navigator>
   );
 }

@@ -1,4 +1,4 @@
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import React, {useEffect} from 'react';
 import {getUser} from '../../store/slices/authSlice';
 import {useAppDispatch} from '../../store/store';
@@ -6,6 +6,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import useEditPassword from '../../hooks/useEditPassword/useEditPassword';
 import Header from '../../components/header/Header';
+import {style} from './editPassword';
 
 export default function EditProfile() {
   const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ export default function EditProfile() {
     setNewPassword,
     confirmNewPassword,
     setConfirmNewPassword,
-    UpdateHandle,
+    updateHandle,
   } = useEditPassword();
 
   useEffect(() => {
@@ -57,24 +58,7 @@ export default function EditProfile() {
           </View>
         </View>
       </View>
-      <Button text="Save Changes" onclick={UpdateHandle} />
+      <Button text="Save Changes" onclick={updateHandle} />
     </View>
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    paddingBottom: 20,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  mainDiv: {
-    marginTop: 50,
-  },
-  subDiv: {
-    marginBottom: 20,
-  },
-});

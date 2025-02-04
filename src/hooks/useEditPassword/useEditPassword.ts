@@ -11,7 +11,7 @@ export default function useEditPassword() {
   const navigation = useNavigation<NativeProp>();
   const user = auth().currentUser;
 
-  const UpdateHandle = async () => {
+  const updateHandle = async () => {
     if (!oldPassword) {
       Alert.alert('Old password is required');
       return;
@@ -81,6 +81,6 @@ export default function useEditPassword() {
     setNewPassword,
     confirmNewPassword,
     setConfirmNewPassword,
-    UpdateHandle,
+    updateHandle,
   };
 }

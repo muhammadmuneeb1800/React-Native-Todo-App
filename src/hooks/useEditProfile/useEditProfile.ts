@@ -17,7 +17,7 @@ export default function useEditProfile() {
   );
   const navigation = useNavigation<NativeProp>();
 
-  const UpdateHandle = async () => {
+  const updateHandle = async () => {
     if (!updateName || updateName.trim() === '') {
       Alert.alert('Please enter a valid full name');
       return;
@@ -62,6 +62,6 @@ export default function useEditProfile() {
     setUpdateName,
     updateEmail1,
     setUpdateEmail1,
-    UpdateHandle,
+    updateHandle,
   };
 }

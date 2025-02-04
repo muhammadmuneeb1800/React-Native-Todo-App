@@ -10,8 +10,16 @@ import {
 import {Alert} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
-// Register The User
+const initialState: UserState = {
+  uid: '',
+  fullName: '',
+  email: '',
+  phone: null,
+  password: null,
+  user: null,
+};
 
+// Register The User
 export const createUser = createAsyncThunk<CreateUserResponse, User>(
   'user/createUser',
   async user => {
@@ -147,15 +155,6 @@ export const updateUser = createAsyncThunk('updateUser', async (user: any) => {
     throw error;
   }
 });
-
-const initialState: UserState = {
-  uid: '',
-  fullName: '',
-  email: '',
-  phone: null,
-  password: null,
-  user: null,
-};
 
 const authSlice = createSlice({
   name: 'user',

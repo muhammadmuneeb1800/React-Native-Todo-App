@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import {NavigationProps, TodoData} from '../../types/types';
-import {DeleteTodo, updateId} from '../../store/slices/todoSlice';
+import {deleteTodo, updateId} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../store/store';
 
@@ -40,7 +40,7 @@ export default function FlateList(props: {filteredData: TodoData[]}) {
                 <View style={style.hr}> </View>
                 <TouchableOpacity
                   onPress={() => {
-                    dispatch(DeleteTodo(item?.id));
+                    dispatch(deleteTodo(item?.id));
                   }}>
                   <Text style={style.delete}>Delete Task</Text>
                 </TouchableOpacity>

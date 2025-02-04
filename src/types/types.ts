@@ -24,6 +24,12 @@ export type tabScreen = {
   Profile?: undefined;
 };
 
+export type tabScreenTab = {
+  name: keyof tabScreen;
+  component: React.FC;
+  icon: string;
+};
+
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;

@@ -2,15 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StatusBar} from 'react-native';
 import Splash from '../screens/splash/Splash';
-import GetStart from '../screens/getStart/GetStart';
-import Login from '../screens/login/Login';
-import Register from '../screens/register/Register';
-import BottomTabNavigation from './BottomTabNavigation';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import EditProfile from '../screens/editProfile/EditProfile';
-import EditTodo from '../screens/editTodo/EditTodo';
-import editPassword from '../screens/editPassword/EditPassword';
+import {AUTH_STACK, GUEST_STACK} from '../constants/constant';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,55 +54,24 @@ export default function StackNavigation() {
           />
         ) : (
           <>
-            {isAuthenticated ? (
-              <>
-                <Stack.Screen
-                  name="HomeScreen"
-                  options={{headerShown: false}}
-                  component={BottomTabNavigation}
-                />
-                <Stack.Screen
-                  name="EditProfile"
-                  options={{
-                    headerShown: false,
-                  }}
-                  component={EditProfile}
-                />
-                <Stack.Screen
-                  name="EditTodo"
-                  options={{
-                    headerShown: false,
-                  }}
-                  component={EditTodo}
-                />
-                <Stack.Screen
-                  name="EditPassword"
-                  options={{
-                    headerShown: false,
-                  }}
-                  component={editPassword}
-                />
-              </>
-            ) : (
-              <>
-                <Stack.Screen
-                  initialParams={GetStart}
-                  name="GetStart"
-                  options={{headerShown: false}}
-                  component={GetStart}
-                />
-                <Stack.Screen
-                  name="Login"
-                  options={{headerShown: false}}
-                  component={Login}
-                />
-                <Stack.Screen
-                  name="Register"
-                  options={{headerShown: false}}
-                  component={Register}
-                />
-              </>
-            )}
+            {isAuthenticated
+              ? AUTH_STACK.map(({name, component}) => (
+                  <Stack.Screen
+                    key={name}
+                    name={name}
+                    component={component}
+                    options={{headerShown: false}}
+                  />
+                ))
+              : GUEST_STACK.map(({name, component, initialParams}) => (
+                  <Stack.Screen
+                    key={name}
+                    name={name}
+                    component={component}
+                    options={{headerShown: false}}
+                    initialParams={initialParams}
+                  />
+                ))}
           </>
         )}
       </Stack.Navigator>

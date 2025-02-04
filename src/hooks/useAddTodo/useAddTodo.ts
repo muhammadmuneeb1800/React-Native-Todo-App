@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Alert} from 'react-native';
 import {useAppDispatch} from '../../store/store';
-import {AddTodo} from '../../store/slices/todoSlice';
+import {addTodo} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
 import {NativeProp} from '../../types/types';
 import auth from '@react-native-firebase/auth';
@@ -63,7 +63,7 @@ export default function useAddTodo() {
       time: formatTime,
     };
 
-    dispatch(AddTodo(data));
+    dispatch(addTodo(data));
     Navigation.navigate('HomeScreen', {screen: 'Home'});
     setTitle('');
     setNotes('');

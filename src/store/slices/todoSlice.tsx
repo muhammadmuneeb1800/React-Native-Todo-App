@@ -3,9 +3,14 @@ import firestore from '@react-native-firebase/firestore';
 import {TodoData, TodosState} from '../../types/types';
 import auth from '@react-native-firebase/auth';
 
+const initialState: TodosState = {
+  todos: [],
+  UpdateTodos: null,
+};
+
 // Add Todo
-export const AddTodo = createAsyncThunk<TodoData, TodoData>(
-  'AddTodo',
+export const addTodo = createAsyncThunk<TodoData, TodoData>(
+  'addTodo',
   async (data, thunkAPI) => {
     try {
       const docRef = await firestore().collection('All Todos').add(data);
@@ -18,8 +23,8 @@ export const AddTodo = createAsyncThunk<TodoData, TodoData>(
 );
 
 // Get Todos
-export const GetTodos = createAsyncThunk<TodoData[], void>(
-  'GetTodos',
+export const getTodos = createAsyncThunk<TodoData[], void>(
+  'getTodos',
   async (_, thunkAPI) => {
     try {
       const user = auth().currentUser;
@@ -48,7 +53,7 @@ export const GetTodos = createAsyncThunk<TodoData[], void>(
 );
 
 // Update Todo
-export const UpdateTodo = createAsyncThunk<TodoData, TodoData>(
+export const updateTodo = createAsyncThunk<TodoData, TodoData>(
   'UpdateTodo',
   async (data, thunkAPI) => {
     try {
@@ -62,7 +67,7 @@ export const UpdateTodo = createAsyncThunk<TodoData, TodoData>(
 );
 
 // Delete Todo
-export const DeleteTodo = createAsyncThunk<
+export const deleteTodo = createAsyncThunk<
   string | undefined,
   string | undefined
 >('DeleteTodo', async (id, thunkAPI) => {
@@ -74,11 +79,6 @@ export const DeleteTodo = createAsyncThunk<
     return thunkAPI.rejectWithValue('Failed to delete Todo');
   }
 });
-
-const initialState: TodosState = {
-  todos: [],
-  UpdateTodos: null,
-};
 
 // Todos Slice
 const todoSlice = createSlice({
@@ -93,23 +93,23 @@ const todoSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(AddTodo.fulfilled, (state, action: PayloadAction<TodoData>) => {
+      .addCase(addTodo.fulfilled, (state, action: PayloadAction<TodoData>) => {
         state.todos = [action.payload, ...state.todos];
       })
       .addCase(
-        GetTodos.fulfilled,
+        getTodos.fulfilled,
         (state, action: PayloadAction<TodoData[]>) => {
           state.todos = action.payload || [];
         },
       )
       .addCase(
-        DeleteTodo.fulfilled,
+        deleteTodo.fulfilled,
         (state, action: PayloadAction<string | undefined>) => {
           state.todos = state.todos.filter(todo => todo.id !== action.payload);
         },
       )
       .addCase(
-        UpdateTodo.fulfilled,
+        updateTodo.fulfilled,
         (state, action: PayloadAction<TodoData>) => {
           const updatedTodos = state.todos.map(todo =>
             todo.id === action.payload.id ? action.payload : todo,

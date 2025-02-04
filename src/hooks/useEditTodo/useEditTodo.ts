@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Alert} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {UpdateTodo} from '../../store/slices/todoSlice';
+import {updateTodo} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
 import {NativeProp} from '../../types/types';
 import moment from 'moment';
@@ -63,7 +63,7 @@ export default function useEditTodo() {
       time: formatTime,
     };
 
-    dispatch(UpdateTodo(data));
+    dispatch(updateTodo(data));
     Navigation.navigate('HomeScreen', {screen: 'Home'});
 
     setTitle('');

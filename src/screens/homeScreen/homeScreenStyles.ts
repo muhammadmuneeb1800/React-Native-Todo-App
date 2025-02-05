@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../constants/colors';
 
 export const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     padding: 20,
   },
   mainDiv: {
@@ -22,7 +23,7 @@ export const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderColor: '#B7B7B7',
+    borderColor: COLORS.light,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 15,
@@ -30,7 +31,7 @@ export const style = StyleSheet.create({
   },
   input: {
     width: '90%',
-    color: '#0B0A11B2',
+    color: COLORS.black,
   },
   data: {
     paddingHorizontal: 10,
@@ -47,10 +48,10 @@ export const style = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     lineHeight: 24,
-    color: '#0B0A11',
+    color: COLORS.secondray,
   },
   looks: {
-    color: '#0B0A11B2',
+    color: COLORS.black,
     marginTop: 9,
     fontSize: 14,
     lineHeight: 18,

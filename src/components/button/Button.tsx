@@ -1,6 +1,7 @@
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {ButtonProps} from '../../types/types';
+import {COLORS} from '../../constants/colors';
 
 export default function Button(props: ButtonProps) {
   return (
@@ -19,23 +20,23 @@ export default function Button(props: ButtonProps) {
 
 const style = StyleSheet.create({
   register: {
-    backgroundColor: '#7EBB4F',
+    backgroundColor: COLORS.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 5,
     textAlign: 'center',
   },
   registerText: {
-    color: '#fff',
+    color: 'white',
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 22,
     textAlign: 'center',
   },
   login: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: '#7EBB4F',
+    borderColor: COLORS.primary,
     paddingVertical: 9,
     paddingHorizontal: 24,
     borderRadius: 5,
@@ -43,7 +44,7 @@ const style = StyleSheet.create({
     textAlign: 'center',
   },
   loginText: {
-    color: '#7EBB4F',
+    color: COLORS.primary,
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 22,

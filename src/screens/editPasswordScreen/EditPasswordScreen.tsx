@@ -6,7 +6,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import useEditPassword from '../../hooks/useEditPassword/useEditPassword';
 import Header from '../../components/header/Header';
-import {style} from './editPassword';
+import {style} from './editPasswordScreenStyles';
 
 export default function EditProfile() {
   const dispatch = useAppDispatch();

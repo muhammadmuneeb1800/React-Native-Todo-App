@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {NativeProp} from '../../types/types';
+import {COLORS} from '../../constants/colors';
 
 type HeaderProps = {
   title: string;
@@ -29,7 +30,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingBottom: 30,
@@ -44,7 +45,7 @@ const style = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '700',
-    color: '#0B0A11',
+    color: COLORS.secondray,
     lineHeight: 24,
   },
 });

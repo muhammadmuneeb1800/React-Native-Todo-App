@@ -1,6 +1,6 @@
 import {View, Image} from 'react-native';
 import React from 'react';
-import {style} from './splash';
+import {style} from './splashScreen';
 export default function Splash() {
   return (
     <View style={style.container}>

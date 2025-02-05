@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StatusBar} from 'react-native';
-import Splash from '../screens/splash/Splash';
+import Splash from '../screens/splashScreen/SplashScreen';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {AUTH_STACK, GUEST_STACK} from '../constants/constant';

@@ -9,7 +9,7 @@ import {useAppDispatch} from '../../store/store';
 import {NavigationProps} from '../../types/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Header from '../../components/header/Header';
-import {style} from './login';
+import {style} from './loginScreen';
 
 export default function Login() {
   const navigation = useNavigation<NavigationProps>();

@@ -15,7 +15,7 @@ import Button from '../../components/button/Button';
 import {Calendar} from 'react-native-calendars';
 import {DayPressEvent} from '../../types/types';
 import moment from 'moment';
-import { calenderTheme, style } from './addTodo';
+import { calenderTheme, style } from './addTodoScreenStyles';
 
 export default function AddTodo() {
   const {

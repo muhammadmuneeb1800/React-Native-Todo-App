@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Octicons';
 import {tabScreen} from '../types/types';
 import {TABS_STACK} from '../constants/constant.ts';
+import { COLORS } from '../constants/colors.ts';
 
 const Tab = createBottomTabNavigator<tabScreen>();
 
@@ -17,13 +18,13 @@ export default function BottomTabNavigation() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: 'white',
           borderTopWidth: 0,
           elevation: 0,
           height: 67,
         },
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: '#7EBB4F',
+        tabBarActiveTintColor: COLORS.primary,
       }}>
       {TABS_STACK.map((tab, index) => (
         <Tab.Screen

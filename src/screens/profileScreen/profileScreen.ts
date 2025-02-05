@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../constants/colors';
 
 export const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingBottom: 30,
@@ -13,7 +14,7 @@ export const style = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     textAlign: 'center',
-    color: '#0B0A11',
+    color: COLORS.secondray,
     lineHeight: 24,
   },
   mainDiv: {
@@ -34,22 +35,22 @@ export const style = StyleSheet.create({
   fullName: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#0B0A11',
+    color: COLORS.secondray,
     lineHeight: 24,
     width: '90%',
   },
   email: {
     fontSize: 12,
     fontWeight: '400',
-    color: '#0B0A1166',
+    color: 'black',
     lineHeight: 16,
     width: '90%',
   },
   about: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: COLORS.light,
     textAlign: 'center',
     paddingVertical: 10,
-    color: '#0B0A1166',
+    color: 'gray',
     fontSize: 12,
     fontWeight: '400',
     lineHeight: 16,
@@ -64,18 +65,18 @@ export const style = StyleSheet.create({
     marginHorizontal: 10,
   },
   change: {
-    color: '#0B0A11B2',
+    color: COLORS.black,
     fontWeight: '400',
     fontSize: 12,
     lineHeight: 16,
   },
   hr: {
     height: 1,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: COLORS.light,
     marginHorizontal: 15,
   },
   out: {
-    color: '#BA1735',
+    color: 'red',
     fontWeight: '400',
     fontSize: 12,
     lineHeight: 16,
@@ -84,7 +85,7 @@ export const style = StyleSheet.create({
   },
   app: {
     textAlign: 'center',
-    color: '#0B0A1133',
+    color: COLORS.light,
     fontWeight: '400',
     fontSize: 12,
     lineHeight: 16,

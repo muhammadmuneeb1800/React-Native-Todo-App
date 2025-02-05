@@ -5,6 +5,7 @@ import {NavigationProps, TodoData} from '../../types/types';
 import {deleteTodo, updateId} from '../../store/slices/todoSlice';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../store/store';
+import {COLORS} from '../../constants/colors';
 
 export default function FlateList(props: {filteredData: TodoData[]}) {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,11 @@ export default function FlateList(props: {filteredData: TodoData[]}) {
                 setOpen(!open);
                 setOpenItemId(item.id);
               }}>
-              <Icon2 name="dots-three-vertical" size={13} color={'#B7B7B7'} />
+              <Icon2
+                name="dots-three-vertical"
+                size={13}
+                color={COLORS.light}
+              />
             </TouchableOpacity>
             {open && openItemId === item?.id ? (
               <View style={style.pop}>
@@ -81,7 +86,7 @@ const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     lineHeight: 20,
-    color: '#0B0A11',
+    color: COLORS.secondray,
   },
   top: {
     flexDirection: 'row',
@@ -99,7 +104,7 @@ const style = StyleSheet.create({
   },
   notes: {
     marginTop: 7,
-    color: '#0B0A11',
+    color: COLORS.secondray,
     fontSize: 12,
     lineHeight: 18,
     fontWeight: '400',
@@ -108,36 +113,36 @@ const style = StyleSheet.create({
   },
   tags: {
     marginTop: 10,
-    color: '#fff',
+    color: 'white',
     fontSize: 10,
     lineHeight: 12,
     fontWeight: '400',
-    backgroundColor: '#BA1735',
+    backgroundColor: COLORS.btn1,
     paddingVertical: 7,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#B7B7B7',
+    borderColor: COLORS.light,
     width: 70,
     textAlign: 'center',
     marginBottom: 10,
   },
   tags1: {
     marginTop: 10,
-    color: '#fff',
+    color: 'white',
     fontSize: 10,
     lineHeight: 12,
     fontWeight: '400',
-    backgroundColor: '#427DFE',
+    backgroundColor: COLORS.btn2,
     paddingVertical: 7,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#B7B7B7',
+    borderColor: COLORS.light,
     width: 70,
     textAlign: 'center',
     marginBottom: 10,
   },
   pop: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     width: 105,
     position: 'absolute',
     top: 15,
@@ -149,21 +154,21 @@ const style = StyleSheet.create({
     zIndex: 1,
   },
   edit: {
-    color: '#0B0A11B2',
+    color: COLORS.black,
     fontSize: 12,
     fontWeight: '400',
     lineHeight: 18,
     textAlign: 'center',
   },
   delete: {
-    color: '#BA1735',
+    color: COLORS.btn1,
     fontSize: 12,
     fontWeight: '400',
     lineHeight: 18,
     textAlign: 'center',
   },
   hr: {
-    backgroundColor: '#545458',
+    backgroundColor: COLORS.light,
     height: 1,
     marginVertical: 3,
   },

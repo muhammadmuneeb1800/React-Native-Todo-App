@@ -1,17 +1,18 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../constants/colors';
 
 export const style = StyleSheet.create({
   header: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    paddingBottom: 20,
+    paddingBottom: 30,
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   contentContainer: {
     flexGrow: 1,
@@ -19,13 +20,13 @@ export const style = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-  join: {
+  wel: {
     marginTop: 50,
-    color: '#0B0A11',
+    color: COLORS.secondray,
     fontWeight: '700',
     fontSize: 24,
     lineHeight: 32,
@@ -33,69 +34,15 @@ export const style = StyleSheet.create({
   nice: {
     fontSize: 14,
     lineHeight: 32,
-    color: '#0B0A11B2',
+    color: COLORS.black,
     fontWeight: '400',
   },
   mainDiv: {
-    marginTop: 15,
+    marginTop: 25,
+    marginBottom: 25,
   },
   subDiv: {
     marginTop: 24,
-  },
-  checkDiv: {
-    marginTop: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  agreeDiv: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: '#7EBB4F',
-  },
-  checked: {
-    backgroundColor: '#7EBB4F',
-    borderColor: '#7EBB4F',
-  },
-  unchecked: {
-    backgroundColor: '#fff',
-    borderColor: '#7EBB4F',
-  },
-  agre: {
-    color: '#0B0A11',
-    fontWeight: '400',
-    fontSize: 14,
-    lineHeight: 16,
-  },
-  term: {
-    color: '#7EBB4F',
-    fontWeight: '400',
-    fontSize: 14,
-    lineHeight: 16,
-  },
-  register: {
-    backgroundColor: '#7EBB4F',
-    borderWidth: 1,
-    borderColor: '#7EBB4F',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 5,
-    textAlign: 'center',
-  },
-  registerText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
   },
   account: {
     flexDirection: 'row',
@@ -103,22 +50,33 @@ export const style = StyleSheet.create({
     marginTop: 15,
     justifyContent: 'center',
   },
+  agre: {
+    color: COLORS.secondray,
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 16,
+  },
+  term: {
+    color: COLORS.primary,
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 16,
+  },
   google: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: '#CBCBCB',
+    borderColor: COLORS.light,
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 5,
+    marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
-    marginTop: 20,
-    marginBottom: 10,
   },
   googleText: {
-    color: '#0B0A11',
+    color: COLORS.secondray,
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 22,

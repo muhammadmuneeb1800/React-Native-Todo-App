@@ -1,13 +1,13 @@
 import useEditPassword from '../hooks/useEditPassword/useEditPassword';
 import BottomTabNavigation from '../navigation/BottomTabNavigation';
-import AddTodo from '../screens/addTodo/AddTodo.tsx';
-import EditProfile from '../screens/editProfile/EditProfile.tsx';
-import EditTodo from '../screens/editTodo/EditTodo.tsx';
-import GetStart from '../screens/getStart/GetStart.tsx';
-import Home from '../screens/home/Home.tsx';
-import Login from '../screens/login/Login.tsx';
-import Profile from '../screens/profile/Profile.tsx';
-import Register from '../screens/register/Register.tsx';
+import AddTodo from '../screens/addTodoScreen/AddTodoScreen.tsx';
+import EditProfile from '../screens/editProfileScreen/EditProfileScreen.tsx';
+import EditTodo from '../screens/editTodoScreen/EditTodoScreen.tsx';
+import GetStart from '../screens/getStartScreen/GetStartScreen.tsx';
+import Home from '../screens/homeScreen/HomeScreen.tsx';
+import Login from '../screens/loginScreen/LoginScreen.tsx';
+import Profile from '../screens/profileScreen/ProfileScreen.tsx';
+import Register from '../screens/registerScreen/RegisterScreen.tsx';
 import {tabScreenTab} from '../types/types.ts';
 
 export const AUTH_STACK = [
@@ -28,3 +28,5 @@ export const TABS_STACK: tabScreenTab[] = [
   {name: 'AddTodo', component: AddTodo, icon: 'home'},
   {name: 'Profile', component: Profile, icon: 'home'},
 ];
+
+

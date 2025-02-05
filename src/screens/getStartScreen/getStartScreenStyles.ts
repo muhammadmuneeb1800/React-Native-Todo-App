@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../constants/colors';
 
 export const style = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingVertical: 40,
@@ -24,7 +25,7 @@ export const style = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     lineHeight: 32,
-    color: '#0B0A11',
+    color: COLORS.secondray,
     textAlign: 'center',
   },
   join: {
@@ -32,7 +33,7 @@ export const style = StyleSheet.create({
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 18,
-    color: '#0B0A11',
+    color: COLORS.secondray,
     textAlign: 'center',
   },
   btns: {

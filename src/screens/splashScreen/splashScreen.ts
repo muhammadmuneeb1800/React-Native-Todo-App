@@ -7,7 +7,7 @@ export const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   img: {
     width: 200,

@@ -6,7 +6,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import useEditProfile from '../../hooks/useEditProfile/useEditProfile';
 import Header from '../../components/header/Header';
-import {style} from './editProfile';
+import {style} from './editProfileScreenStyles';
 export default function EditProfile() {
   const dispatch = useAppDispatch();
   const {

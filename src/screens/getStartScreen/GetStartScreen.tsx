@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../../components/button/Button';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProps} from '../../types/types';
-import {style} from './getStartScreenStyles';
+import {style} from './GetStartScreenStyles';
 
 export default function GetStart() {
   const navigation = useNavigation<NavigationProps>();

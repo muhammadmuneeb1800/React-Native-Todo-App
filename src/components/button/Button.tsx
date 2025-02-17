@@ -1,7 +1,7 @@
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {ButtonProps} from '../../types/types';
-import {COLORS} from '../../constants/colors';
+import { style } from './ButtonStyle';
 
 export default function Button(props: ButtonProps) {
   return (
@@ -18,36 +18,4 @@ export default function Button(props: ButtonProps) {
   );
 }
 
-const style = StyleSheet.create({
-  register: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 5,
-    textAlign: 'center',
-  },
-  registerText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-  login: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    paddingVertical: 9,
-    paddingHorizontal: 24,
-    borderRadius: 5,
-    marginTop: 15,
-    textAlign: 'center',
-  },
-  loginText: {
-    color: COLORS.primary,
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-});
+

@@ -16,7 +16,7 @@ import moment from 'moment';
 import Header from '../../components/header/Header';
 import {Calendar} from 'react-native-calendars';
 import {DayPressEvent} from '../../types/types';
-import {calenderTheme, style} from './editTodoScreenStyles';
+import {calenderTheme, style} from './EditTodoScreenStyles';
 
 export default function EditTodo() {
   const {

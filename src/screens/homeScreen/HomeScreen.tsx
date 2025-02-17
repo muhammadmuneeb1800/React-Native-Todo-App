@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {TodoData} from '../../types/types';
 import FlateList from '../../components/flateList/FlateList';
 import {getTodos} from '../../store/slices/todoSlice';
-import {style} from './homeScreenStyles';
+import {style} from './HomeScreenStyles';
 
 export default function Home() {
   const Data = useAppSelector(store => store.todoSlice.todos) || null;

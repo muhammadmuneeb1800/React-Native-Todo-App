@@ -7,7 +7,7 @@ import {getUser, resetAuth} from '../../store/slices/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProps} from '../../types/types';
 import {resetState} from '../../store/slices/todoSlice';
-import {style} from './profileScreen';
+import {style} from './ProfileScreen';
 
 export default function Profile() {
   const user = useAppSelector(store => store.authSlice.user);

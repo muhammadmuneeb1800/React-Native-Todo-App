@@ -9,7 +9,7 @@ import {useAppDispatch} from '../../store/store';
 import {NavigationProps} from '../../types/types';
 import Header from '../../components/header/Header';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {style} from './registerScreen';
+import {style} from './RegisterScreen';
 
 export default function Register() {
   const {

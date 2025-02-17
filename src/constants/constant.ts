@@ -1,6 +1,6 @@
-import useEditPassword from '../hooks/useEditPassword/useEditPassword';
 import BottomTabNavigation from '../navigation/BottomTabNavigation';
 import AddTodo from '../screens/addTodoScreen/AddTodoScreen.tsx';
+import EditPassword from '../screens/editPasswordScreen/EditPasswordScreen.tsx';
 import EditProfile from '../screens/editProfileScreen/EditProfileScreen.tsx';
 import EditTodo from '../screens/editTodoScreen/EditTodoScreen.tsx';
 import GetStart from '../screens/getStartScreen/GetStartScreen.tsx';
@@ -14,7 +14,7 @@ export const AUTH_STACK = [
   {name: 'HomeScreen', component: BottomTabNavigation},
   {name: 'EditProfile', component: EditProfile},
   {name: 'EditTodo', component: EditTodo},
-  {name: 'EditPassword', component: useEditPassword},
+  {name: 'EditPassword', component: EditPassword},
 ];
 
 export const GUEST_STACK = [
